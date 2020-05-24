@@ -20,6 +20,11 @@ projects.set('misc', createProject(path.resolve(
     `${source}/misc/tsconfig.json`
 )));
 
+projects.set('utils', createProject(path.resolve(
+    __dirname,
+    `${source}/utils/tsconfig.json`
+)));
+
 const packages: string[] = [ ...Array.from(projects.keys()) ];
 
 packagesList.forEach((name: string): void => {
