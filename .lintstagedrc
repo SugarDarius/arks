@@ -1,7 +1,6 @@
 {
     "packages/**/*.{ts}": [
         "npm run format",
-        "git add",
         "npm run lint:packages"
     ]
 }
