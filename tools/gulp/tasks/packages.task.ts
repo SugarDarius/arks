@@ -35,6 +35,11 @@ projects.set('logger', createProject(path.resolve(
     `${source}/logger/tsconfig.json`
 )));
 
+projects.set('monitors', createProject(path.resolve(
+    __dirname,
+    `${source}/monitors/tsconfig.json`
+)));
+
 const packages: string[] = [ ...Array.from(projects.keys()) ];
 
 packagesList.forEach((name: string): void => {
