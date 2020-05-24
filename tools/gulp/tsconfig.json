@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "es6",
+        "strictNullChecks": true,
+        "esModuleInterop": true,
+        "strict": true
+    },
+    "files": [
+        "./gulpfile.ts"
+    ],
+    "exclude": [
+        "../node_modules"
+    ]
+}

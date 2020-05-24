@@ -1,0 +1,11 @@
+**/*.ts
+*.ts
+
+!**/*.d.ts
+!*.d.ts
+
+.eslintrc.js
+tsconfig.json
+.prettierrc
+
+package-lock.json
