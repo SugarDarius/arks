@@ -1,0 +1,51 @@
+{
+    "name": "@arks/server",
+    "version": "1.0.0",
+    "description": "A new React framework",
+    "main": "./index.js",
+    "types": "./index.d.ts",
+    "homepage": "https://github.com/SugarDarius/arks",
+    "bugs": {
+        "url": "https://github.com/SugarDarius/arks/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SugarDarius/arks.git"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Aurélien Dupays Dexemple",
+        "email": "dupaysdexemple.aurelien@outlook.com",
+        "url": "https://github.com/SugarDarius"
+    },
+    "engines": {
+        "node": ">=12.16.3",
+        "npm": ">=6.13.0",
+        "yarn": "yarn is not supported - please use npm"
+    },
+    "devDependencies": {
+        "@types/body-parser": "1.19.0",
+        "@types/compression": "1.7.0",
+        "@types/cookie-parser": "1.4.2",
+        "@types/cors": "2.8.6",
+        "@types/dotenv": "8.2.0",
+        "@types/express": "4.17.6",
+        "@types/helmet": "0.0.47",
+        "@types/morgan": "1.9.1",
+        "@types/node": "14.0.5",
+        "typescript": "3.9.3"
+    },
+    "dependencies": {
+        "@arks/utils": "1.0.0",
+        "@arks/logger": "1.0.0",
+        "@arks/common": "1.0.0",
+        "body-parser": "1.19.0",
+        "compression": "1.7.4",
+        "cookie-parser": "1.4.5",
+        "cors": "2.8.5",
+        "dotenv": "8.2.0",
+        "express": "4.17.1",
+        "helmet": "3.22.1",
+        "morgan": "1.10.0"
+    }
+}

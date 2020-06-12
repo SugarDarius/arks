@@ -1,7 +1,7 @@
 {
     "name": "@arks/utils",
     "version": "1.0.0",
-    "description": "A new interface builder frameworks",
+    "description": "A new React framework",
     "main": "./index.js",
     "types": "./index.d.ts",
     "homepage": "https://github.com/SugarDarius/arks",
@@ -25,9 +25,11 @@
     },
     "devDependencies": {
         "@types/node": "14.0.5",
+        "@types/uuid": "8.0.0",
         "typescript": "3.9.3"
     },
     "dependencies": {
-        "address": "1.1.2"
+        "address": "1.1.2",
+        "uuid": "8.1.0"
     }
 }

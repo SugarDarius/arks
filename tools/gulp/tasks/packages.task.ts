@@ -40,6 +40,16 @@ projects.set('monitors', createProject(path.resolve(
     `${source}/monitors/tsconfig.json`
 )));
 
+projects.set('compiler', createProject(path.resolve(
+    __dirname,
+    `${source}/compiler/tsconfig.json`
+)));
+
+projects.set('server', createProject(path.resolve(
+    __dirname,
+    `${source}/server/tsconfig.json`
+)));
+
 const packages: string[] = [ ...Array.from(projects.keys()) ];
 
 packagesList.forEach((name: string): void => {

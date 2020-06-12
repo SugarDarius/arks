@@ -1,2 +1,2 @@
 # ARKS
-A new interface builder framework
+A new React framework

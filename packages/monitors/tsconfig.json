@@ -2,8 +2,8 @@
     "compilerOptions": {
         "baseUrl": "./",
         "strict": true,
-        "module": "esnext",
-        "target": "ES2017",
+        "module": "commonjs",
+        "target": "es5",
         "esModuleInterop": true,
         "moduleResolution": "node",
         "outDir": "./dist",

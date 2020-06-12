@@ -1,7 +1,7 @@
 {
     "name": "@arks/misc",
     "version": "1.0.0",
-    "description": "A new interface builder frameworks",
+    "description": "A new React framework",
     "main": "./index.js",
     "types": "./index.d.ts",
     "homepage": "https://github.com/SugarDarius/arks",

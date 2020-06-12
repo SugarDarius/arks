@@ -1,0 +1,50 @@
+{
+    "name": "@arks/compiler",
+    "version": "1.0.0",
+    "description": "A new React framework",
+    "main": "./index.js",
+    "types": "./index.d.ts",
+    "homepage": "https://github.com/SugarDarius/arks",
+    "bugs": {
+        "url": "https://github.com/SugarDarius/arks/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SugarDarius/arks.git"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Aurélien Dupays Dexemple",
+        "email": "dupaysdexemple.aurelien@outlook.com",
+        "url": "https://github.com/SugarDarius"
+    },
+    "engines": {
+        "node": ">=12.16.3",
+        "npm": ">=6.13.0",
+        "yarn": "yarn is not supported - please use npm"
+    },
+    "devDependencies": {
+        "@types/node": "14.0.5",
+        "@types/terser-webpack-plugin": "2.2.0",
+        "@types/webpack": "4.41.13",
+        "@types/webpack-dev-middleware": "3.7.1",
+        "@types/webpack-hot-middleware": "2.25.3",
+        "typescript": "3.9.3"
+    },
+    "dependencies": {
+        "@babel/cli": "7.8.4",
+        "@babel/core": "7.9.6",
+        "@babel/plugin-proposal-class-properties": "7.10.1",
+        "@babel/plugin-proposal-decorators": "7.10.1",
+        "@babel/preset-env": "7.9.6",
+        "@babel/preset-react": "7.9.4",
+        "@babel/preset-typescript": "7.9.0",
+        "babel-loader": "8.1.0",
+        "fork-ts-checker-webpack-plugin": "4.1.6",
+        "react-hot-loader": "4.12.21",
+        "terser-webpack-plugin": "3.0.1",
+        "webpack": "4.43.0",
+        "webpack-dev-middleware": "3.7.2",
+        "webpack-hot-middleware": "2.25.0"
+    }
+}
