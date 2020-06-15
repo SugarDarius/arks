@@ -40,16 +40,20 @@ exports.DevCommand = void 0;
 var server_1 = require("@arks/server");
 function DevCommand(cmd) {
     return __awaiter(this, void 0, void 0, function () {
-        var port;
+        var port, host, protocol;
         return __generator(this, function (_a) {
-            port = cmd.port;
-            try {
-                server_1.startArksServer(true, port);
+            switch (_a.label) {
+                case 0:
+                    port = cmd.port, host = cmd.host, protocol = cmd.protocol;
+                    return [4 /*yield*/, server_1.startArksServer(true, {
+                            port: port,
+                            host: host,
+                            protocol: protocol
+                        })];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
             }
-            catch (err) {
-                console.error(err);
-            }
-            return [2 /*return*/];
         });
     });
 }

@@ -18,14 +18,12 @@ export const NO_COMPRESSION = false;
 
 export const NO_LOGGER = false;
 
-export const LIMIT_SKIPPED_ROUTES = [METRICS_ENDPOINT, LIVENESS_ENDPOINT];
-
 export const PUBLIC_DIRECTORY_PATH = 'public';
 export const BUILD_DIRECTORY_PATH = 'build';
 
 // FROM ENV
 export const PORT = 8080;
-export const HOST = 'localhost';
+export const HOST = '0.0.0.0';
 export const PROTOCOL = 'http';
 
 export const GRAPHQL_API_ENDPOINT = '';
@@ -37,4 +35,5 @@ export const LIMIT_MAX_REQUESTS_PER_IP = 200;
 
 // Cannot be changed
 export const BUILD_ID = 'build-id';
-export const SERVER_CONFIG_FILE = 'arks.server.config.js';
+export const DOT_ENV_FILE = '.env';
+export const CONFIG_FILE = 'arks.json';

@@ -11,6 +11,7 @@ export class MetricsController extends BaseController {
         super(path);
 
         this._metricsService = new MetricsService(collectTimeout);
+        this.initilizeRoutes();
     }
 
     private getMetrics(): void {

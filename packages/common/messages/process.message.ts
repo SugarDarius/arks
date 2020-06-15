@@ -8,7 +8,7 @@ export type TProcessMessage = {
     uptime: string;
 };
 
-export const ProcessMessages: TProcessMessage = {
+export const ProcessMessage: TProcessMessage = {
     exiting: `Exiting NodeJS process pid:${process.pid} with exit code 1 as ${nodeEnv}!`,
     uptime: `NodeJS process pid:${process.pid} was up since ${Math.floor(process.uptime())}s as ${nodeEnv}!`,
 };

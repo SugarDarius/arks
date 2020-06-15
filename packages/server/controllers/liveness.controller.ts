@@ -11,6 +11,7 @@ export class LivenessController extends BaseController {
         super(path);
 
         this._livenessService = new LivenessService();
+        this.initilizeRoutes();
     }
 
     private getAlive(): void {

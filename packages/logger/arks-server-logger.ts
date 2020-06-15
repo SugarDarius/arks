@@ -11,7 +11,7 @@ export class ArksServerLogger {
         const date: string = moment().format(loggerDateFormat);
         const prefix: string = `[Arks] {pid: ${process.pid}} - `;
 
-        return (withoutPrefix ? '' : prefix) + `${date}\t ${message}`;
+        return (withoutPrefix ? '' : prefix) + `${date}\t ${message}\n`;
     }
 
     private static printStackTrace(trace?: string): void {

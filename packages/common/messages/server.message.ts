@@ -4,6 +4,11 @@ import { getNodeEnv } from '@arks/utils';
 const nodeEnv: string = getNodeEnv();
 
 export type TSeverMessage = {
+    configurationOptionsPriorityReminder: string;
+    usingDotEnvFile: string;
+    noDotEnvFile: string;
+    usingArksJsonFile: string;
+    noArksJsonFile: string;
     initializing: string;
     initialized: string;
     starting: string;
@@ -31,6 +36,11 @@ export type TSeverMessage = {
 };
 
 export const ServerMessage: TSeverMessage = {
+    configurationOptionsPriorityReminder: `[Reminder] configuration options priority : cli options > .env file > arks.json file. Some configuration options are only availables from the arks.json file`,
+    usingDotEnvFile: `.env file detected. Using defined options in it in the Arks configuration priority order`,
+    noDotEnvFile: `No .env file detected, falling back to @arks/server pre-defined configuration options`,
+    usingArksJsonFile: `arks.json file detected. Using defined options in it in the Arks configuration priority order`,
+    noArksJsonFile: 'No arks.json file detected, falling back to @arks/server pre-defined configuration options',
     initializing: `Initializing server as ${nodeEnv}!`,
     initialized: `Server initialized as ${nodeEnv}!`,
     starting: `Starting server as ${nodeEnv}!`,

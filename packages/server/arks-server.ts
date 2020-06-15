@@ -33,8 +33,6 @@ export interface ArksServerOptions {
 
     noLogger?: boolean;
 
-    limitSkippedRoutes?: string[];
-
     publicDirectoryPath?: string;
     buildDirectoryPath?: string;
 
@@ -121,7 +119,9 @@ export class ArksServer {
             noMetrics,
             noLiveness,
 
-            limitSkippedRoutes,
+            metricsEndpoint,
+            livenessEndpoint,
+
             limitWindowsTimeFrameMs,
             limitMaxRequestsPerIp,
         } = this.options;
@@ -151,7 +151,7 @@ export class ArksServer {
                 windowMs: limitWindowsTimeFrameMs,
                 max: limitMaxRequestsPerIp,
                 skip: (req: express.Request): boolean => {
-                    return !limitSkippedRoutes.includes(req.path);
+                    return ![metricsEndpoint, livenessEndpoint].includes(req.path);
                 }
             }));
         });
