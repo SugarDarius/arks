@@ -26,9 +26,10 @@
         "yarn": "yarn is not supported - please use npm"
     },
     "scripts": {
-        "develop:cli": "npm-run-all --serial develop:cli:clean develop:cli:build",
+        "develop:cli": "npm-run-all --serial develop:cli:clean develop:cli:build develop:cli:link",
         "develop:cli:clean": "shx rm -rf ./bin",
-        "develop:cli:build": "tsc -p ./tsconfig.json"
+        "develop:cli:build": "tsc -p ./tsconfig.json",
+        "develop:cli:link": "npm link @arks/cli"
     },
     "devDependencies": {
         "@types/chalk": "2.2.0",

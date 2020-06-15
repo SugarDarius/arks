@@ -1,0 +1,10 @@
+{
+    "name": "arks-example-00",
+    "version": "1.0.0",
+    "scripts": {
+        "develop": "arks dev -p 8080"
+    },
+    "devDependencies": {
+        "@arks/cli": "1.0.0"
+    }
+}

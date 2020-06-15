@@ -74,7 +74,7 @@ function Arks() {
                     process.stdout.write('\r\n');
                     commander_1.program
                         .name('arks')
-                        .version(pkg.version, '-v', '--version')
+                        .version(pkg.version, '-v, --version')
                         .helpOption('-h, --help', 'read more information');
                     commander_1.program
                         .command('dev')
