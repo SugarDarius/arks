@@ -1,2 +1,2 @@
 # ARKS
-A new React framework
+An opiniated React framework for isomorphic apps with Apollo GraphQL 

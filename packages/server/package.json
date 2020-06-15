@@ -1,7 +1,7 @@
 {
     "name": "@arks/server",
     "version": "1.0.0",
-    "description": "A new React framework",
+    "description": "An opiniated React framework for isomorphic apps with Apollo GraphQL ",
     "main": "./index.js",
     "types": "./index.d.ts",
     "homepage": "https://github.com/SugarDarius/arks",
@@ -45,6 +45,7 @@
         "dotenv": "8.2.0",
         "express": "4.17.1",
         "helmet": "3.22.1",
+        "http-proxy-middleware": "1.0.4",
         "morgan": "1.10.0",
         "open": "7.0.4"
     }

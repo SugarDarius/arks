@@ -14,7 +14,7 @@ async function Arks(): Promise<void> {
 
     program
         .name('arks')
-        .version(pkg.version, '-v', '--version')
+        .version(pkg.version, '-v, --version')
         .helpOption('-h, --help', 'read more information');
     
     program

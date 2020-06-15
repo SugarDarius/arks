@@ -26,6 +26,9 @@ export type TSeverMessage = {
     creatingLivenessController: string;
     livenessControllerCreated: string;
     livenessControllerAdded: string;
+    creatingGraphQLController: string;
+    graphQlControllerCreated: string;
+    graphQlControllerAdded: string;
     noHelmet: string;
     noCors: string;
     noLimit: string;
@@ -58,6 +61,9 @@ export const ServerMessage: TSeverMessage = {
     creatingLivenessController: `Creating LivenessController!`,
     livenessControllerCreated: `LivenessController created!`,
     livenessControllerAdded: `LivenessController added into the server!`,
+    creatingGraphQLController: `Creating GraphQLController`,
+    graphQlControllerCreated: 'GraphQLController created!',
+    graphQlControllerAdded: `GraphQLController added into the server!`,
     noHelmet: `Option "noHelmet" detected, the middleware "helmet" is not added into the server!`,
     noCors: `Option "noCors" detected, the middleware "cors" is not added into the server!`,
     noLimit: `Option "noLimit" detected, the middleware "limit" is not added into the server!`,

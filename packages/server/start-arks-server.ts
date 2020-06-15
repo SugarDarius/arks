@@ -108,14 +108,15 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
 
         }, isDev);
 
-        const expressApp = arksServer.getExpressApp();
+        await arksServer.setExpressApp();
+        
         ArksServerLogger.info(ServerMessage.initialized);
         ArksServerLogger.emptyLine();
 
         ArksServerLogger.info(ServerMessage.starting);
         ArksServerLogger.emptyLine();
 
-        const server = http.createServer(expressApp);
+        const server = http.createServer(arksServer.getExpressApp());
 
         const onProcessSignal = (signal: NodeJS.Signals): void => {
             ArksServerLogger.info(ServerMessage.stopping);

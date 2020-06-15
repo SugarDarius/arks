@@ -14,6 +14,7 @@ import morgan from 'morgan';
 import { 
     MetricsController,
     LivenessController,
+    GraphQLController,
 } from './controllers';
 
 export interface ArksServerOptions {
@@ -54,17 +55,20 @@ export class ArksServer {
     private app: express.Express;
     private metricsController: MetricsController | null;
     private livenessController: LivenessController | null;
+    private graphqlController: GraphQLController | null;
 
     constructor(options: Required<ArksServerOptions>, isDev: boolean) {
         this.options = options;
 
-        this.app = express();
         this.metricsController = null;
         this.livenessController = null;
+        this.graphqlController = null;
 
         this.setMetricsController();
         this.setLivenessController();
-        this.setExpressApp();
+        this.setGraphQLController();
+
+        this.app = express();
     }
 
     private setMetricsController(): void {
@@ -107,7 +111,16 @@ export class ArksServer {
         ArksServerLogger.emptyLine();
     }
 
-    private setExpressApp(): void {
+    private setGraphQLController(): void {
+        const { graphqlApiEndpoint } = this.options;
+
+        ArksServerLogger.info(ServerMessage.creatingGraphQLController);
+        this.graphqlController = new GraphQLController('/graphql', graphqlApiEndpoint);
+        ArksServerLogger.info(ServerMessage.graphQlControllerCreated);
+        ArksServerLogger.emptyLine();
+    }
+
+    async setExpressApp(): Promise<void> {
         const nodeEnv = getNodeEnv();
         const { 
             noHelmet,
@@ -194,6 +207,13 @@ export class ArksServer {
             this.app.use(this.livenessController.router);
 
             ArksServerLogger.info(ServerMessage.livenessControllerAdded);
+            ArksServerLogger.emptyLine();
+        }
+
+        if (this.graphqlController !== null) {
+            this.app.use(this.graphqlController.router);
+
+            ArksServerLogger.info(ServerMessage.graphQlControllerAdded);
             ArksServerLogger.emptyLine();
         }
 
