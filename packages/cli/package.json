@@ -2,6 +2,8 @@
     "name": "@arks/cli",
     "version": "1.0.0",
     "description": "A new React framework",
+    "main": "./bin/arks.js",
+    "types": "./bin/arks.d.ts",
     "bin": {
         "arks": "./bin/arks.js"
     },
@@ -16,7 +18,6 @@
     "license": "MIT",
     "author": {
         "name": "Aurélien Dupays Dexemple",
-        "email": "dupaysdexemple.aurelien@outlook.com",
         "url": "https://github.com/SugarDarius"
     },
     "engines": {
@@ -25,16 +26,21 @@
         "yarn": "yarn is not supported - please use npm"
     },
     "scripts": {
-        "develop:cli": "npm-run-all develop:cli:build",
+        "develop:cli": "npm-run-all --serial develop:cli:clean develop:cli:build",
+        "develop:cli:clean": "shx rm -rf ./bin",
         "develop:cli:build": "tsc -p ./tsconfig.json"
     },
     "devDependencies": {
+        "@types/chalk": "2.2.0",
         "@types/node": "14.0.5",
         "npm-run-all": "4.1.5",
         "typescript": "3.9.3"
     },
     "dependencies": {
-        "@arks/logger": "1.0.0",
-        "commander": "5.1.0"
+        "@arks/misc": "1.0.0",
+        "@arks/server": "1.0.0",
+        "chalk": "4.0.0",
+        "commander": "5.1.0",
+        "shx": "0.3.2"
     }
 }

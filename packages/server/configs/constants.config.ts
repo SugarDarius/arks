@@ -24,7 +24,7 @@ export const PUBLIC_DIRECTORY_PATH = 'public';
 export const BUILD_DIRECTORY_PATH = 'build';
 
 // FROM ENV
-export const PORT = 3000;
+export const PORT = 8080;
 export const HOST = 'localhost';
 export const PROTOCOL = 'http';
 

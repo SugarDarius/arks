@@ -1,17 +1,34 @@
-import { Command } from 'commander';
-import { LoaderCommand } from './commands';
+#!/usr/bin/env node
 
-async function ArksCli(): Promise<void> {
-    const program = new Command();
+import { ArksConsoleDisplay } from '@arks/misc';
+import { program } from 'commander';
+import chalk from 'chalk';
 
-    program.version(require('../package.json').version);
-    // @ts-ignore
-    LoaderCommand.load(program);
-    program.parse(process.argv);
+import * as Commands from './commands';
 
-    if (program.args.length === 0) {
+async function Arks(): Promise<void> {
+    const pkg = require('../package.json');
+
+    process.stdout.write(chalk.white(ArksConsoleDisplay));
+    process.stdout.write('\r\n');
+
+    program
+        .name('arks')
+        .version(pkg.version, '-v', '--version')
+        .helpOption('-h, --help', 'read more information');
+    
+    program
+        .command('dev')
+        .description('Start an Arks project as development')
+        .option('-p, --port <number>', 'Specific port to use', '8080')
+        .action(Commands.DevCommand);
+
+    if (!process.argv.slice(2).length) {
         program.outputHelp();
+        process.exit(0);
     }
+
+    await program.parseAsync(process.argv);
 }
 
-ArksCli();
+Arks();

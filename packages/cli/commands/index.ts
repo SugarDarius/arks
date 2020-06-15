@@ -1,1 +1,2 @@
-export * from './loader.command';
+
+export * from './dev.command';
