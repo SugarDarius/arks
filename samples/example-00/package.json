@@ -5,6 +5,14 @@
         "develop": "arks dev -p 8080"
     },
     "devDependencies": {
-        "@arks/cli": "1.0.0"
+        "@arks/cli": "1.0.0",
+        "@types/node": "14.0.5",
+        "@types/react": "16.9.36",
+        "@types/react-dom": "16.9.8",
+        "typescript": "3.9.3"
+    },
+    "dependencies": {
+        "react": "16.13.1",
+        "react-dom": "16.13.1"
     }
 }

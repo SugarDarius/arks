@@ -45,6 +45,11 @@ projects.set('compiler', createProject(path.resolve(
     `${source}/compiler/tsconfig.json`
 )));
 
+projects.set('client', createProject(path.resolve(
+    __dirname,
+    `${source}/client/tsconfig.json`
+)));
+
 projects.set('server', createProject(path.resolve(
     __dirname,
     `${source}/server/tsconfig.json`

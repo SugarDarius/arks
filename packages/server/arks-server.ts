@@ -1,6 +1,9 @@
 import { ServerMessage } from '@arks/common';
 import { ArksServerLogger } from '@arks/logger';
 import { or, getNodeEnv } from '@arks/utils';
+import { ArksReactServerRenderer } from '@arks/client';
+
+import * as path from 'path';
 
 import express from 'express';
 import helmet from 'helmet';
@@ -51,18 +54,23 @@ export interface ArksServerOptions {
 
 export class ArksServer {
     private options: Required<ArksServerOptions>;
+    private _isDev: boolean;
+    private _cwd: string;
 
     private app: express.Express;
     private metricsController: MetricsController | null;
     private livenessController: LivenessController | null;
     private graphqlController: GraphQLController | null;
 
-    constructor(options: Required<ArksServerOptions>, isDev: boolean) {
+    constructor(options: Required<ArksServerOptions>, isDev: boolean, cwd: string) {
         this.options = options;
 
         this.metricsController = null;
         this.livenessController = null;
         this.graphqlController = null;
+
+        this._isDev = isDev;
+        this._cwd = cwd;
 
         this.setMetricsController();
         this.setLivenessController();
@@ -123,6 +131,8 @@ export class ArksServer {
     async setExpressApp(): Promise<void> {
         const nodeEnv = getNodeEnv();
         const { 
+            appName, 
+
             noHelmet,
             noCors,
             noLimit,
@@ -131,6 +141,9 @@ export class ArksServer {
             noCompression,
             noMetrics,
             noLiveness,
+
+            publicDirectoryPath,
+            buildDirectoryPath,
 
             metricsEndpoint,
             livenessEndpoint,
@@ -196,6 +209,18 @@ export class ArksServer {
             return ArksServerLogger.infoToString(`${tokens.method(req, res)} ${tokens.status(req, res)} ${tokens.url(req, res)} ${tokens['response-time'](req, res)}ms as ${nodeEnv}!`);
         }));
 
+        ArksServerLogger.info(ServerMessage.settingPublicDirectory);
+        this.app.use('/public', express.static(path.resolve(this._cwd, `./${publicDirectoryPath}`)));
+        ArksServerLogger.info(`${ServerMessage.publicDirectorySetted} ${this._cwd}/${publicDirectoryPath}`);
+        ArksServerLogger.emptyLine();
+
+        if (!this._isDev) {
+            ArksServerLogger.info(ServerMessage.settingBuildDirectory);
+            this.app.use('/build', express.static(path.resolve(this._cwd, `./${buildDirectoryPath}`)));
+            ArksServerLogger.info(`${ServerMessage.buildDirectorySetted} ${this._cwd}/${buildDirectoryPath}`);
+            ArksServerLogger.emptyLine();
+        }
+
         if (!noMetrics && this.metricsController !== null) {
             this.app.use(this.metricsController.router);
 
@@ -217,8 +242,21 @@ export class ArksServer {
             ArksServerLogger.emptyLine();
         }
 
-        this.app.use('*', (req: express.Request, res: express.Response): void => {
-            res.status(200).send('Hello There !');
+        this.app.use('*', async (req: express.Request, res: express.Response): Promise<void> => {
+            try {
+                const markups: string = await ArksReactServerRenderer({
+                    title: appName,
+                    content: '',
+                    build: '',
+                    publicPath: '/public'
+                });
+
+                res.status(200).send(`<!doctype html>\n${markups}`);
+            }
+            catch (err) {
+                ArksServerLogger.error(err.message || '', err.stack);
+                res.status(500).end();
+            } 
         });
     }
 

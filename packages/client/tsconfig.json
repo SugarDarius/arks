@@ -8,11 +8,14 @@
         "moduleResolution": "node",
         "outDir": "./dist",
         "declaration": true,
-        "experimentalDecorators": true
+        "jsx": "react",
+        "lib": ["DOM", "esnext"]
     },
     "include": [
         "*.ts",
-        "**/*.ts"
+        "*.tsx",
+        "**/*.ts",
+        "**/*.tsx"
     ],
     "exclude": [ "../node_modules" ]
 }

@@ -37,3 +37,4 @@ export const LIMIT_MAX_REQUESTS_PER_IP = 200;
 export const BUILD_ID = 'build-id';
 export const DOT_ENV_FILE = '.env';
 export const CONFIG_FILE = 'arks.json';
+export const SOURCE_DIRECTORY_PATH = 'src';

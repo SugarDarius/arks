@@ -36,6 +36,10 @@ export type TSeverMessage = {
     noCookieParser: string;
     noCompression: string;
     noLogger: string;
+    settingPublicDirectory: string;
+    publicDirectorySetted: string;
+    settingBuildDirectory: string;
+    buildDirectorySetted: string;
 };
 
 export const ServerMessage: TSeverMessage = {
@@ -52,7 +56,7 @@ export const ServerMessage: TSeverMessage = {
     error: `Server error as ${nodeEnv}`,
     stopping: `Stopping server as ${nodeEnv}!`,
     stopped: `Server stopped!`,
-    openning: `Opening React Application in the default browser!`,
+    openning: `Opening React Application in the default browser`,
     noMetrics: `Option "noMetrics" detected, the MetricsController creation is bypassed and not added into the server!`,
     creatingMetricsController: `Creating MetricsController!`,
     metricsControllerCreated: `MetricsController created!`,
@@ -71,4 +75,8 @@ export const ServerMessage: TSeverMessage = {
     noCookieParser: `Option "noCookieParser" detected, the middleware "cookie-parser" is not added into the server!`,
     noCompression: `Option "noCompression" detected, the middleware "compression" is not added into the server!`,
     noLogger: `Option "noLogger" detected, logs are disabled into the server!`,
+    settingPublicDirectory: `Setting public directory path to server as static on route /public`,
+    publicDirectorySetted: `Public directory path setted. Static content from /public route served from `,
+    settingBuildDirectory: `Setting build directory path to server as static on route /build`,
+    buildDirectorySetted: `Build directory path setted. Built files for applications from /build route served from `
 };

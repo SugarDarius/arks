@@ -1,5 +1,5 @@
 import { ArksServer, ArksServerOptions } from './arks-server';
 
-export function createArksServer(options: Required<ArksServerOptions>, isDev: boolean): ArksServer {
-    return new ArksServer(options, isDev);
+export function createArksServer(options: Required<ArksServerOptions>, isDev: boolean, cwd: string): ArksServer {
+    return new ArksServer(options, isDev, cwd);
 }
