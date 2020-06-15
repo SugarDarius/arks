@@ -52,6 +52,7 @@ export interface ArksServerOptions {
     limitMaxRequestsPerIp: number;
 
     sourceDirectoryPath: string;
+    appComponentFilename: string;
     reactAppRootNodeId: string;
 }
 
@@ -155,6 +156,7 @@ export class ArksServer {
             limitMaxRequestsPerIp,
 
             sourceDirectoryPath,
+            appComponentFilename,
             reactAppRootNodeId,
         } = this.options;
 
@@ -257,6 +259,8 @@ export class ArksServer {
                     reactAppRootNodeId,
                     url: req.url,
                     cwd: this._cwd,
+                    sourceDirectoryPath,
+                    appComponentFilename,
                 });
 
                 res.status(200).send(`<!doctype html>\n${markups}`);

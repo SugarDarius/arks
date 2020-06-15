@@ -40,6 +40,9 @@ export type TSeverMessage = {
     publicDirectorySetted: string;
     settingBuildDirectory: string;
     buildDirectorySetted: string;
+    lookingForAppComponent: string;
+    appComponentFound: string;
+    noAppComponentFound: string;
 };
 
 export const ServerMessage: TSeverMessage = {
@@ -78,5 +81,8 @@ export const ServerMessage: TSeverMessage = {
     settingPublicDirectory: `Setting public directory path to server as static on route /public`,
     publicDirectorySetted: `Public directory path setted. Static content from /public route served from `,
     settingBuildDirectory: `Setting build directory path to server as static on route /build`,
-    buildDirectorySetted: `Build directory path setted. Built files for applications from /build route served from `
+    buildDirectorySetted: `Build directory path setted. Built files for applications from /build route served from `,
+    lookingForAppComponent: `Looking for <App /> component in src/ directory`,
+    appComponentFound: `<App /> component found in src/ directory!`,
+    noAppComponentFound: `No <App /> component found in src/ directory, falling back to a simple <div />!`,
 };

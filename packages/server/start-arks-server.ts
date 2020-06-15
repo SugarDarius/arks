@@ -107,6 +107,7 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
             limitMaxRequestsPerIp: !!process.env.LIMIT_MAX_REQUESTS_PER_IP ? parseInt(process.env.LIMIT_MAX_REQUESTS_PER_IP, 10) : !isNil(arksJsonFile.limitMaxRequestsPerIp) && isNumber(arksJsonFile.limitMaxRequestsPerIp) ? arksJsonFile.limitMaxRequestsPerIp : arksDefaultConfig.LIMIT_MAX_REQUESTS_PER_IP,
 
             sourceDirectoryPath: arksDefaultConfig.SOURCE_DIRECTORY_PATH,
+            appComponentFilename: arksDefaultConfig.APP_COMPONENT_FILENAME,
             reactAppRootNodeId: arksDefaultConfig.REACT_APP_ROOT_NODE_ID,
 
         }, isDev, cwd);

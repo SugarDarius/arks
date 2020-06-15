@@ -38,4 +38,5 @@ export const BUILD_ID = 'build-id';
 export const DOT_ENV_FILE = '.env';
 export const CONFIG_FILE = 'arks.json';
 export const SOURCE_DIRECTORY_PATH = 'src';
-export const REACT_APP_ROOT_NODE_ID = 'arks-react-app'
+export const APP_COMPONENT_FILENAME = 'app.tsx';
+export const REACT_APP_ROOT_NODE_ID = 'arks-react-app';
