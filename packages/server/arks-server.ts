@@ -21,39 +21,42 @@ import {
 } from './controllers';
 
 export interface ArksServerOptions {
-    appName?: string;
+    appName: string;
 
-    noMetrics?: boolean;
-    noLiveness?: boolean;
-    metricsEndpoint?: string;
-    livenessEndpoint?: string;
+    noMetrics: boolean;
+    noLiveness: boolean;
+    metricsEndpoint: string;
+    livenessEndpoint: string;
 
-    noHelmet?: boolean;
-    noCors?: boolean;
-    noLimit?: boolean;
-    noBodyParser?: boolean;
-    noCookieParser?: boolean;
-    noCompression?: boolean;
+    noHelmet: boolean;
+    noCors: boolean;
+    noLimit: boolean;
+    noBodyParser: boolean;
+    noCookieParser: boolean;
+    noCompression: boolean;
 
-    noLogger?: boolean;
+    noLogger: boolean;
 
-    publicDirectoryPath?: string;
-    buildDirectoryPath?: string;
+    publicDirectoryPath: string;
+    buildDirectoryPath: string;
 
-    port?: number;
-    host?: string;
-    protocol?: string;
+    port: number;
+    host: string;
+    protocol: string;
 
-    graphqlApiEndpoint?: string;
+    graphqlApiEndpoint: string;
 
-    metricsCollectTimeout?: number;
-    httpTimeout?: number;
-    limitWindowsTimeFrameMs?: number;
-    limitMaxRequestsPerIp?: number;
+    metricsCollectTimeout: number;
+    httpTimeout: number;
+    limitWindowsTimeFrameMs: number;
+    limitMaxRequestsPerIp: number;
+
+    sourceDirectoryPath: string;
+    reactAppRootNodeId: string;
 }
 
 export class ArksServer {
-    private options: Required<ArksServerOptions>;
+    private options: ArksServerOptions;
     private _isDev: boolean;
     private _cwd: string;
 
@@ -62,7 +65,7 @@ export class ArksServer {
     private livenessController: LivenessController | null;
     private graphqlController: GraphQLController | null;
 
-    constructor(options: Required<ArksServerOptions>, isDev: boolean, cwd: string) {
+    constructor(options: ArksServerOptions, isDev: boolean, cwd: string) {
         this.options = options;
 
         this.metricsController = null;
@@ -150,6 +153,9 @@ export class ArksServer {
 
             limitWindowsTimeFrameMs,
             limitMaxRequestsPerIp,
+
+            sourceDirectoryPath,
+            reactAppRootNodeId,
         } = this.options;
 
         or(noHelmet, () => {
@@ -246,9 +252,11 @@ export class ArksServer {
             try {
                 const markups: string = await ArksReactServerRenderer({
                     title: appName,
-                    content: '',
                     build: '',
-                    publicPath: '/public'
+                    publicPath: '/public',
+                    reactAppRootNodeId,
+                    url: req.url,
+                    cwd: this._cwd,
                 });
 
                 res.status(200).send(`<!doctype html>\n${markups}`);

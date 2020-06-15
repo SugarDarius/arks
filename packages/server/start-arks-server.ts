@@ -106,6 +106,9 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
             limitWindowsTimeFrameMs: !!process.env.LIMIT_WINDOWS_TIME_FRAME_MS ? parseInt(process.env.LIMIT_WINDOWS_TIME_FRAME_MS, 10) : !isNil(arksJsonFile.limitWindowsTimeFrameMs) && isNumber(arksJsonFile.limitWindowsTimeFrameMs) ? arksJsonFile.limitWindowsTimeFrameMs : arksDefaultConfig.LIMIT_WINDOWS_TIME_FRAME_MS,
             limitMaxRequestsPerIp: !!process.env.LIMIT_MAX_REQUESTS_PER_IP ? parseInt(process.env.LIMIT_MAX_REQUESTS_PER_IP, 10) : !isNil(arksJsonFile.limitMaxRequestsPerIp) && isNumber(arksJsonFile.limitMaxRequestsPerIp) ? arksJsonFile.limitMaxRequestsPerIp : arksDefaultConfig.LIMIT_MAX_REQUESTS_PER_IP,
 
+            sourceDirectoryPath: arksDefaultConfig.SOURCE_DIRECTORY_PATH,
+            reactAppRootNodeId: arksDefaultConfig.REACT_APP_ROOT_NODE_ID,
+
         }, isDev, cwd);
 
         await arksServer.setExpressApp();

@@ -6,6 +6,7 @@ export type HtmlProps = {
     content: string;
     build: string;
     publicPath: string;
+    reactAppRootNodeId: string;
 };
 
 export function Html(props: HtmlProps): React.ReactElement {
@@ -13,7 +14,8 @@ export function Html(props: HtmlProps): React.ReactElement {
         title,
         content,
         build,
-        publicPath
+        publicPath,
+        reactAppRootNodeId,
     } = props;
 
     return (
@@ -27,7 +29,7 @@ export function Html(props: HtmlProps): React.ReactElement {
             </head>
             <body>
                 <div 
-                    id='arks-react-app'
+                    id={reactAppRootNodeId}
                     dangerouslySetInnerHTML={{
                         __html: content
                     }} 

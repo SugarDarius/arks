@@ -1,6 +1,6 @@
 
 import webpackDevMiddleware, { WebpackDevMiddleware, Options as WebpackDevMiddlewareOptions } from 'webpack-dev-middleware';
-import { ArksWebpackCompiler } from './arks-webpack-compiler';
+import { ArksWebpackCompiler } from './create-arks-webpack-compiler';
 
 export type ArksWebpackDevMiddleware = WebpackDevMiddleware
 

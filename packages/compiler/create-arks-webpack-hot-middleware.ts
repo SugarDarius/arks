@@ -1,6 +1,6 @@
 
 import webpackHotMiddleware, { MiddlewareOptions as WebpackHotMiddlewareOptions } from 'webpack-hot-middleware';
-import { ArksWebpackCompiler } from './arks-webpack-compiler';
+import { ArksWebpackCompiler } from './create-arks-webpack-compiler';
 
 export type ArksWebpackHotMiddleware = ReturnType<typeof webpackHotMiddleware>;
 
