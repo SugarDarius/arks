@@ -93,7 +93,6 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
             noLogger: !isNil(arksJsonFile.noLogger) && isBoolean(arksJsonFile.noLogger) ? arksJsonFile.noLogger : arksDefaultConfig.NO_LOGGER,
 
             publicDirectoryPath: !isNil(arksJsonFile.publicDirectoryPath) && isString(arksJsonFile.publicDirectoryPath) ? arksJsonFile.publicDirectoryPath : arksDefaultConfig.PUBLIC_DIRECTORY_PATH,
-            buildDirectoryPath: !isNil(arksJsonFile.buildDirectoryPath) && isString(arksJsonFile.buildDirectoryPath) ? arksJsonFile.buildDirectoryPath : arksDefaultConfig.BUILD_DIRECTORY_PATH,
 
             port: PORT,
             host: HOST,
@@ -108,6 +107,9 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
 
             sourceDirectoryPath: arksDefaultConfig.SOURCE_DIRECTORY_PATH,
             appComponentFilename: arksDefaultConfig.APP_COMPONENT_FILENAME,
+            compiledClientSourceDirectoryPath: arksDefaultConfig.COMPILED_CLIENT_SOURCE_DIRECTORY_PATH,
+            compiledServerSourceDirectoryPath: arksDefaultConfig.COMPILED_SERVER_SOURCE_DIRECTORY_PATH,
+            compiledAppComponentFilename: arksDefaultConfig.COMPILED_APP_COMPONENT_FILENAME,
             reactAppRootNodeId: arksDefaultConfig.REACT_APP_ROOT_NODE_ID,
 
         }, isDev, cwd);

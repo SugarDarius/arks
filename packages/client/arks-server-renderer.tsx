@@ -1,3 +1,5 @@
+import { ServerMessage } from '@arks/common';
+import { ArksServerLogger } from '@arks/logger';
 
 import * as path from 'path';
 import * as fs from 'fs';
@@ -15,28 +17,49 @@ export type RendererOptions = {
     reactAppRootNodeId: string;
     url: string;
     cwd: string;
-    sourceDirectoryPath: string;
-    appComponentFilename: string;
+    compiledServerSourceDirectoryPath: string;
+    compiledAppComponentFilename: string;
 };
 
 export async function ArksReactServerRenderer(options: RendererOptions): Promise<string> {
     const { 
         url,
         cwd,
-        sourceDirectoryPath,
-        appComponentFilename,
+        compiledServerSourceDirectoryPath,
+        compiledAppComponentFilename,
          ...rest 
     } = options;
 
-    const fallbackDiv = (<div />);
+    let AppRoot = (<div>No App component found</div>);
     const Router = createArksRouter(true, url);
 
-    // Read APP component
+    ArksServerLogger.info(ServerMessage.lookingForAppComponent);
+    const isAppComponentExists: boolean = fs.existsSync(path.resolve(cwd, `${compiledServerSourceDirectoryPath}/${compiledAppComponentFilename}`));
+
+    if (isAppComponentExists) {
+        ArksServerLogger.info(ServerMessage.appComponentFound);
+        try {
+            const App = await import(path.resolve(cwd, `${compiledServerSourceDirectoryPath}/${compiledAppComponentFilename}`));
+            console.log()
+            console.log()
+            console.log('App', App);
+            console.log()
+            console.log()
+            AppRoot = (<App />);
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+    else {
+        ArksServerLogger.info(ServerMessage.noAppComponentFound);
+    }
+    ArksServerLogger.emptyLine();
 
     // TEMP - for now without Apollo GraphQL;
     const content: string = ReactDOMServer.renderToStaticMarkup(
         <Router>
-            <div />
+            {AppRoot}
         </Router>
     );
 

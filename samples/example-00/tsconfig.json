@@ -6,14 +6,13 @@
         "target": "es5",
         "esModuleInterop": true,
         "moduleResolution": "node",
-        "outDir": "./dist",
-        "declaration": true,
-        "lib":  ["dom"],
-        "jsx": "react"
+        "outDir": "./build",
+        "declaration": false,
+        "jsx": "react",
+        "lib": ["esnext", "DOM"]
     },
     "include": [
-        "*.ts",
-        "**/*.ts"
+        "./src/**/*"
     ],
-    "exclude": [ "../node_modules" ]
+    "exclude": [ "node_modules" ]
 }

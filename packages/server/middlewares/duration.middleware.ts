@@ -25,5 +25,7 @@ export function durationMiddleware (
         res.on('error', (error: Error): void => {
             onError(path, method, uuid, error, res.statusCode);
         });
+
+        next();
     };
 }

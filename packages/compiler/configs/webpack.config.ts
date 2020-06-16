@@ -8,20 +8,28 @@ import TerserPlugin from 'terser-webpack-plugin';
 const nodeEnv = getNodeEnv();
 
 export type CreateWebpackConfigOptions = {
-    entryPointPath: string; 
-    publicPath: string;
+    srcDirectoryPath: string;
+    entryPointPath: string;
+    outputPath: string, 
     filename: string;
+    tsconfigPath: string;
+    publicPath?: string;
+    noHmr?: boolean;
     profiling?: boolean;
     useSourceMap?: boolean;
 };
 
 export function createWebpackConfig(options: CreateWebpackConfigOptions): webpack.Configuration {
     const {
+        srcDirectoryPath,
         entryPointPath,
-        publicPath,
+        outputPath,
         filename,
+        tsconfigPath,
+        publicPath,
         profiling,
         useSourceMap,
+        noHmr
     } = options;
 
     const isDev: boolean = nodeEnv === 'development';
@@ -39,7 +47,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
         
         devtool: isDev ? 'cheap-module-source-map' : shouldUseSourceMap ? 'source-map' : false,
 
-        entry: isDev ? [
+        entry: isDev && !noHmr ? [
             'react-hot-loader/patch',
             'webpack-hot-middleware',
             entryPointPath
@@ -47,6 +55,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
 
         output: {
             publicPath,
+            path: outputPath,
             filename,
         },
 
@@ -59,26 +68,38 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
             rules: [
                 {
                     test: /.(js|jsx|ts|tsx)$/,
-                    loader: 'babel-loader',
+                    include: srcDirectoryPath,
+                    loader: require.resolve('babel-loader'),
                     options: {
                         babelrc: false,
                         configFile: false,
                         presets: [
                             [
-                                '@babel/preset-env',
+                                require('@babel/preset-env').default,
                                 {
+                                    useBuiltIns: 'entry',
+                                    corejs: 3,
+                                    modules: false,
                                     targets: {
                                         browsers: 'last 2 versions'
                                     }
                                 }  
                             ],
-                            '@babel/preset-typescript',
-                            '@babel/preset-react',
+                            [
+                                require('@babel/preset-react').default,
+                                {
+                                    development: isDev,
+                                    useBuiltIns: true,
+                                }
+                            ],
+                            [
+                                require('@babel/preset-typescript').default,
+                            ]
                         ],
                         plugins: [
-                            ["@babel/plugin-proposal-decorators", { legacy: true }],
-                            ["@babel/plugin-proposal-class-properties", { loose: true }],
-                            'react-hot-loader/babel'
+                            [require('@babel/plugin-proposal-decorators').default, { legacy: true }],
+                            [require('@babel/plugin-proposal-class-properties').default, { loose: true }],
+                            ...(isDev && !noHmr ? [require('react-hot-loader/babel').default] : []),
                         ],
                         cacheDirectory: true,
                         cacheCompression: false,
@@ -89,13 +110,16 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
         },
 
         plugins: [
-            ...(isDev ? [ new webpack.HotModuleReplacementPlugin() ] : []),
-            new ForkTsCheckerWebpackPlugin(),
+            ...(isDev && !noHmr ? [ new webpack.HotModuleReplacementPlugin() ] : []),
+            new ForkTsCheckerWebpackPlugin({
+                tsconfig: tsconfigPath,
+                checkSyntacticErrors: true,
+                silent: true,
+            }),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': isProd ? 'production' : 'development'
             })
         ],
-
         optimization: {
             minimize: isProd,
             minimizer: [

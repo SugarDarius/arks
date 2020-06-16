@@ -43,6 +43,12 @@ export type TSeverMessage = {
     lookingForAppComponent: string;
     appComponentFound: string;
     noAppComponentFound: string;
+    creatingServerArksWebpackCompiler: string;
+    serverArksWebpackCompilerCreated: string;
+    arksServerWebpackCompilerCreationError: string;
+    compilingReactAppForServerSideRendering: string;
+    reactAppCompilationForServerSideRenderingSuccess: string;
+    reactAppCompilationForServerSideRenderingError: string;
 };
 
 export const ServerMessage: TSeverMessage = {
@@ -82,7 +88,13 @@ export const ServerMessage: TSeverMessage = {
     publicDirectorySetted: `Public directory path setted. Static content from /public route served from `,
     settingBuildDirectory: `Setting build directory path to server as static on route /build`,
     buildDirectorySetted: `Build directory path setted. Built files for applications from /build route served from `,
-    lookingForAppComponent: `Looking for <App /> component in src/ directory`,
-    appComponentFound: `<App /> component found in src/ directory!`,
-    noAppComponentFound: `No <App /> component found in src/ directory, falling back to a simple <div />!`,
+    lookingForAppComponent: `Looking for <App /> component in .arks/server directory`,
+    appComponentFound: `<App /> component found in .arks/server directory!`,
+    noAppComponentFound: `No <App /> component found in .arks/server directory, falling back to a simple <div />!`,
+    creatingServerArksWebpackCompiler: `Creating server Arks webpack compiler!`,
+    serverArksWebpackCompilerCreated: `Server Arks webpack compiler create!`,
+    arksServerWebpackCompilerCreationError: `Server Arks webpack compiler creation error`,
+    compilingReactAppForServerSideRendering: `Compiling React app for server side rendering`,
+    reactAppCompilationForServerSideRenderingSuccess: `React app compilation for server side rendering sucess`,
+    reactAppCompilationForServerSideRenderingError: `React app compilation for server side rendering error`,
 };

@@ -19,7 +19,6 @@ export const NO_COMPRESSION = false;
 export const NO_LOGGER = false;
 
 export const PUBLIC_DIRECTORY_PATH = 'public';
-export const BUILD_DIRECTORY_PATH = 'build';
 
 // FROM ENV
 export const PORT = 8080;
@@ -39,4 +38,7 @@ export const DOT_ENV_FILE = '.env';
 export const CONFIG_FILE = 'arks.json';
 export const SOURCE_DIRECTORY_PATH = 'src';
 export const APP_COMPONENT_FILENAME = 'app.tsx';
+export const COMPILED_CLIENT_SOURCE_DIRECTORY_PATH = '.arks/build';
+export const COMPILED_SERVER_SOURCE_DIRECTORY_PATH = '.arks/server';
+export const COMPILED_APP_COMPONENT_FILENAME = 'app.js';
 export const REACT_APP_ROOT_NODE_ID = 'arks-react-app';

@@ -30,6 +30,7 @@
         "typescript": "3.9.3"
     },
     "dependencies": {
+        "@arks/common": "1.0.0",
         "@arks/logger": "1.0.0",
         "react": "16.13.1",
         "react-dom": "16.13.1",

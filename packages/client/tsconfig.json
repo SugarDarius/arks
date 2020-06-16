@@ -8,8 +8,8 @@
         "moduleResolution": "node",
         "outDir": "./dist",
         "declaration": true,
-        "jsx": "react",
-        "lib": ["DOM", "esnext"]
+        "lib":  ["dom"],
+        "jsx": "react"
     },
     "include": [
         "*.ts",

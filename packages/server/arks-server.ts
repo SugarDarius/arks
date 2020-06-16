@@ -1,6 +1,7 @@
 import { ServerMessage } from '@arks/common';
 import { ArksServerLogger } from '@arks/logger';
 import { or, getNodeEnv } from '@arks/utils';
+import { createArksWebpackCompiler, ArksWebpackCompiler } from '@arks/compiler';
 import { ArksReactServerRenderer } from '@arks/client';
 
 import * as path from 'path';
@@ -38,7 +39,6 @@ export interface ArksServerOptions {
     noLogger: boolean;
 
     publicDirectoryPath: string;
-    buildDirectoryPath: string;
 
     port: number;
     host: string;
@@ -53,6 +53,9 @@ export interface ArksServerOptions {
 
     sourceDirectoryPath: string;
     appComponentFilename: string;
+    compiledClientSourceDirectoryPath: string;
+    compiledServerSourceDirectoryPath: string;
+    compiledAppComponentFilename: string;
     reactAppRootNodeId: string;
 }
 
@@ -132,32 +135,20 @@ export class ArksServer {
         ArksServerLogger.emptyLine();
     }
 
-    async setExpressApp(): Promise<void> {
+    private addMiddlewares(): void {
         const nodeEnv = getNodeEnv();
-        const { 
-            appName, 
-
+        const {
             noHelmet,
             noCors,
             noLimit,
             noBodyParser,
             noCookieParser,
             noCompression,
-            noMetrics,
-            noLiveness,
-
-            publicDirectoryPath,
-            buildDirectoryPath,
-
             metricsEndpoint,
             livenessEndpoint,
 
             limitWindowsTimeFrameMs,
             limitMaxRequestsPerIp,
-
-            sourceDirectoryPath,
-            appComponentFilename,
-            reactAppRootNodeId,
         } = this.options;
 
         or(noHelmet, () => {
@@ -212,10 +203,17 @@ export class ArksServer {
             this.app.use(compression());
         });
 
-        // @ts-ignore
-        this.app.use(morgan((tokens: morgan.TokenIndexer, req: express.Request, res: express.Response): string => {
+         // @ts-ignore
+         this.app.use(morgan((tokens: morgan.TokenIndexer, req: express.Request, res: express.Response): string => {
             return ArksServerLogger.infoToString(`${tokens.method(req, res)} ${tokens.status(req, res)} ${tokens.url(req, res)} ${tokens['response-time'](req, res)}ms as ${nodeEnv}!`);
         }));
+    }
+
+    private addStaticDirectories(): void {
+        const {
+            publicDirectoryPath,
+            compiledClientSourceDirectoryPath,
+        } = this.options;
 
         ArksServerLogger.info(ServerMessage.settingPublicDirectory);
         this.app.use('/public', express.static(path.resolve(this._cwd, `./${publicDirectoryPath}`)));
@@ -224,10 +222,17 @@ export class ArksServer {
 
         if (!this._isDev) {
             ArksServerLogger.info(ServerMessage.settingBuildDirectory);
-            this.app.use('/build', express.static(path.resolve(this._cwd, `./${buildDirectoryPath}`)));
-            ArksServerLogger.info(`${ServerMessage.buildDirectorySetted} ${this._cwd}/${buildDirectoryPath}`);
+            this.app.use('/build', express.static(path.resolve(this._cwd, `./${compiledClientSourceDirectoryPath}`)));
+            ArksServerLogger.info(`${ServerMessage.buildDirectorySetted} ${this._cwd}/${compiledClientSourceDirectoryPath}`);
             ArksServerLogger.emptyLine();
         }
+    }
+
+    private addControllers(): void {
+        const {
+            noMetrics,
+            noLiveness,
+        } = this.options;
 
         if (!noMetrics && this.metricsController !== null) {
             this.app.use(this.metricsController.router);
@@ -249,6 +254,62 @@ export class ArksServer {
             ArksServerLogger.info(ServerMessage.graphQlControllerAdded);
             ArksServerLogger.emptyLine();
         }
+    }
+
+    async setExpressApp(): Promise<void> {
+        const { 
+            appName,
+            sourceDirectoryPath,
+            appComponentFilename,
+            compiledAppComponentFilename,
+            compiledServerSourceDirectoryPath,
+            reactAppRootNodeId,
+        } = this.options;
+
+        this.addMiddlewares();
+        this.addStaticDirectories();
+        this.addControllers();
+
+        let compiler: ArksWebpackCompiler | null = null
+        try {
+            ArksServerLogger.info(ServerMessage.creatingServerArksWebpackCompiler);
+            compiler = createArksWebpackCompiler({
+                srcDirectoryPath:  path.resolve(this._cwd, `./${sourceDirectoryPath}`),
+                entryPointPath: path.resolve(this._cwd, `./${sourceDirectoryPath}/${appComponentFilename}`),
+                outputPath: path.resolve(this._cwd, `./${compiledServerSourceDirectoryPath}`),
+                filename: compiledAppComponentFilename,
+                tsconfigPath: path.resolve(this._cwd, './tsconfig.json'),
+                noHmr: true,
+                useSourceMap: this._isDev,
+                profiling: !this._isDev,
+            });
+            ArksServerLogger.info(ServerMessage.serverArksWebpackCompilerCreated);
+        }
+        catch (err) {
+            ArksServerLogger.info(ServerMessage.arksServerWebpackCompilerCreationError);
+            ArksServerLogger.error(err.message || '', err.stack);
+        }
+
+        try {
+            if (compiler !== null) {
+                ArksServerLogger.info(ServerMessage.compilingReactAppForServerSideRendering);
+                const compilerResult = await new Promise((resolve, reject) => {
+                    compiler!.run((err, stats): void => {
+                        if (!!err || stats.hasErrors()) {
+                            return reject(err || stats);
+                        }
+                        
+                        return resolve(stats);
+                    });
+                });
+                // console.log('compilerResult', compilerResult);
+                ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingSuccess);
+            }
+        }
+        catch (err) {
+            ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingError);
+            ArksServerLogger.error(err.message || '', err.stack);
+        }
 
         this.app.use('*', async (req: express.Request, res: express.Response): Promise<void> => {
             try {
@@ -259,8 +320,8 @@ export class ArksServer {
                     reactAppRootNodeId,
                     url: req.url,
                     cwd: this._cwd,
-                    sourceDirectoryPath,
-                    appComponentFilename,
+                    compiledServerSourceDirectoryPath: `${compiledServerSourceDirectoryPath}`,
+                    compiledAppComponentFilename,
                 });
 
                 res.status(200).send(`<!doctype html>\n${markups}`);
