@@ -24,6 +24,10 @@ export class ArksServerLogger {
         process.stdout.write(color(this.computeMessage(message, withoutPrefix)));
     }
 
+    private static printMessageRaw(message: string, withoutPrefix?: boolean): void {
+        process.stdout.write(this.computeMessage(message, withoutPrefix));
+    }
+
     private static messageToString(message: string, color: chalk.Chalk, withoutPrefix?: boolean): string {
         return color(this.computeMessage(message, withoutPrefix));
     }
@@ -37,8 +41,12 @@ export class ArksServerLogger {
         this.printMessage(message, yellow);
     }
 
-    static log(message: string): void {
-        this.printMessage(message, cyan);
+    static log(message: string, withoutPrefix?: boolean): void {
+        this.printMessage(message, cyan, withoutPrefix);
+    }
+
+    static logRaw(message: string, withoutPrefix?: boolean): void {
+        this.printMessageRaw(message, withoutPrefix);
     }
 
     static info(message: string): void {

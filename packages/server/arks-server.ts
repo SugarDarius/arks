@@ -1,7 +1,11 @@
 import { ServerMessage } from '@arks/common';
 import { ArksServerLogger } from '@arks/logger';
 import { or, getNodeEnv } from '@arks/utils';
-import { createArksWebpackCompiler, ArksWebpackCompiler } from '@arks/compiler';
+import { 
+    ArksWebpackCompiler,
+    createArksWebpackCompiler,
+    runArksWebpackCompiler,
+} from '@arks/compiler';
 import { ArksReactServerRenderer } from '@arks/client';
 
 import * as path from 'path';
@@ -256,19 +260,13 @@ export class ArksServer {
         }
     }
 
-    async setExpressApp(): Promise<void> {
-        const { 
-            appName,
+    private async compilesFromAppRootForSSR(): Promise<void> {
+        const {
             sourceDirectoryPath,
             appComponentFilename,
             compiledAppComponentFilename,
             compiledServerSourceDirectoryPath,
-            reactAppRootNodeId,
         } = this.options;
-
-        this.addMiddlewares();
-        this.addStaticDirectories();
-        this.addControllers();
 
         let compiler: ArksWebpackCompiler | null = null
         try {
@@ -291,26 +289,40 @@ export class ArksServer {
             ArksServerLogger.error(err.message || '', err.stack);
         }
 
+        ArksServerLogger.emptyLine();
+
         try {
             if (compiler !== null) {
                 ArksServerLogger.info(ServerMessage.compilingReactAppForServerSideRendering);
-                const compilerResult = await new Promise((resolve, reject) => {
-                    compiler!.run((err, stats): void => {
-                        if (!!err || stats.hasErrors()) {
-                            return reject(err || stats);
-                        }
-                        
-                        return resolve(stats);
-                    });
-                });
-                // console.log('compilerResult', compilerResult);
+                const compilerResult = await runArksWebpackCompiler(compiler);
+
                 ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingSuccess);
+                ArksServerLogger.emptyLine();
+
+                ArksServerLogger.logRaw(compilerResult.toString({ colors: true, chunks: true }), true);
             }
         }
         catch (err) {
             ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingError);
-            ArksServerLogger.error(err.message || '', err.stack);
+            ArksServerLogger.error(err.message || err, err.stack);
         }
+
+        ArksServerLogger.emptyLine();
+    }
+
+    async setExpressApp(): Promise<void> {
+        const { 
+            appName,
+            compiledAppComponentFilename,
+            compiledServerSourceDirectoryPath,
+            reactAppRootNodeId,
+        } = this.options;
+
+        this.addMiddlewares();
+        this.addStaticDirectories();
+        this.addControllers();
+
+        await this.compilesFromAppRootForSSR();
 
         this.app.use('*', async (req: express.Request, res: express.Response): Promise<void> => {
             try {
