@@ -18,6 +18,7 @@ import * as bodyParser from 'body-parser';
 import coolieParser from 'cookie-parser';
 import compression from 'compression';
 import morgan from 'morgan';
+import ora from 'ora';
 
 import { 
     MetricsController,
@@ -268,7 +269,7 @@ export class ArksServer {
             compiledServerSourceDirectoryPath,
         } = this.options;
 
-        let compiler: ArksWebpackCompiler | null = null
+        let compiler: ArksWebpackCompiler | null = null;
         try {
             ArksServerLogger.info(ServerMessage.creatingServerArksWebpackCompiler);
             compiler = createArksWebpackCompiler({
@@ -291,11 +292,22 @@ export class ArksServer {
 
         ArksServerLogger.emptyLine();
 
+        const spinner = ora({ 
+            text: 'Compiling ...', 
+            color: 'cyan',
+            spinner: 'dots',
+            stream: process.stdout,
+        });
+
         try {
             if (compiler !== null) {
+
                 ArksServerLogger.info(ServerMessage.compilingReactAppForServerSideRendering);
+                spinner.start();
+
                 const compilerResult = await runArksWebpackCompiler(compiler);
 
+                spinner.stop();
                 ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingSuccess);
                 ArksServerLogger.emptyLine();
 
@@ -303,6 +315,7 @@ export class ArksServer {
             }
         }
         catch (err) {
+            spinner.stop();
             ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingError);
             ArksServerLogger.error(err.message || err, err.stack);
         }

@@ -49,6 +49,7 @@
         "helmet": "3.22.1",
         "http-proxy-middleware": "1.0.4",
         "morgan": "1.10.0",
-        "open": "7.0.4"
+        "open": "7.0.4",
+        "ora": "4.0.4"
     }
 }
