@@ -280,6 +280,7 @@ export class ArksServer {
                 filename: compiledAppComponentFilename,
                 tsconfigPath: path.resolve(this._cwd, './tsconfig.json'),
                 noHmr: true,
+                useUmdLibrary: true,
                 useSourceMap: this._isDev,
                 profiling: !this._isDev,
             });

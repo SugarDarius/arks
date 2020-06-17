@@ -14,6 +14,7 @@ export type CreateWebpackConfigOptions = {
     filename: string;
     tsconfigPath: string;
     publicPath?: string;
+    useUmdLibrary?: boolean;
     noHmr?: boolean;
     profiling?: boolean;
     useSourceMap?: boolean;
@@ -27,6 +28,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
         filename,
         tsconfigPath,
         publicPath,
+        useUmdLibrary,
         profiling,
         useSourceMap,
         noHmr
@@ -57,6 +59,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
             publicPath,
             path: outputPath,
             filename,
+            ...(useUmdLibrary ? { libraryTarget: 'umd', globalObject: 'this' } : {})
         },
 
         resolve: {
@@ -117,7 +120,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
                 silent: true,
             }),
             new webpack.DefinePlugin({
-                'process.env.NODE_ENV': isProd ? 'production' : 'development'
+                'process.env.NODE_ENV': isProd ? '"production"' : '"development"'
             })
         ],
         optimization: {

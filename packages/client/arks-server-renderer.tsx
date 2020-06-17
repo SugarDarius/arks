@@ -39,12 +39,7 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
     if (isAppComponentExists) {
         ArksServerLogger.info(ServerMessage.appComponentFound);
         try {
-            const App = await import(path.resolve(cwd, `${compiledServerSourceDirectoryPath}/${compiledAppComponentFilename}`));
-            console.log()
-            console.log()
-            console.log('App', App);
-            console.log()
-            console.log()
+            const { default: App } = await import(path.resolve(cwd, `${compiledServerSourceDirectoryPath}/${compiledAppComponentFilename}`));
             AppRoot = (<App />);
         }
         catch (err) {
