@@ -8,14 +8,17 @@ import TerserPlugin from 'terser-webpack-plugin';
 const nodeEnv = getNodeEnv();
 
 export type CreateWebpackConfigOptions = {
-    srcDirectoryPath: string;
+    srcDirectoryPath: string | string[];
     entryPointPath: string;
-    outputPath: string, 
     filename: string;
     tsconfigPath: string;
+    hmrPath?: string;
+    hmrHearbeat?: number;
+    outputPath?: string;
     publicPath?: string;
     useUmdLibrary?: boolean;
     noHmr?: boolean;
+    useWatch?: boolean;
     profiling?: boolean;
     useSourceMap?: boolean;
 };
@@ -24,18 +27,20 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
     const {
         srcDirectoryPath,
         entryPointPath,
+        hmrPath,
+        hmrHearbeat,
         outputPath,
         filename,
         tsconfigPath,
         publicPath,
         useUmdLibrary,
+        useWatch,
         profiling,
         useSourceMap,
         noHmr
     } = options;
 
     const isDev: boolean = nodeEnv === 'development';
-
     const isProd: boolean = nodeEnv === 'production';
     const isProdProfiling: boolean = isProd && !!profiling;
 
@@ -48,16 +53,17 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
         bail: isProd,
         
         devtool: isDev ? 'cheap-module-source-map' : shouldUseSourceMap ? 'source-map' : false,
+        watch: useWatch,
 
         entry: isDev && !noHmr ? [
-            'react-hot-loader/patch',
-            'webpack-hot-middleware',
+            `react-hot-loader/patch`,
+            `webpack-hot-middleware/client${!!hmrPath ? `?path=${hmrPath}` : ''}${!!hmrHearbeat ? `&heartbeat=${hmrHearbeat}` : ''}`,
             entryPointPath
         ] : entryPointPath,
 
         output: {
             publicPath,
-            path: outputPath,
+            ...(!!outputPath ? { path: outputPath } : { }),
             filename,
             ...(useUmdLibrary ? { libraryTarget: 'umd', globalObject: 'this' } : {})
         },
@@ -70,7 +76,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
             strictExportPresence: true,
             rules: [
                 {
-                    test: /.(js|jsx|ts|tsx)$/,
+                    test: /.(j|t)sx?$/,
                     include: srcDirectoryPath,
                     loader: require.resolve('babel-loader'),
                     options: {
@@ -89,20 +95,20 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
                                 }  
                             ],
                             [
+                                require('@babel/preset-typescript').default,
+                            ],
+                            [
                                 require('@babel/preset-react').default,
                                 {
                                     development: isDev,
                                     useBuiltIns: true,
                                 }
                             ],
-                            [
-                                require('@babel/preset-typescript').default,
-                            ]
                         ],
                         plugins: [
                             [require('@babel/plugin-proposal-decorators').default, { legacy: true }],
                             [require('@babel/plugin-proposal-class-properties').default, { loose: true }],
-                            ...(isDev && !noHmr ? [require('react-hot-loader/babel').default] : []),
+                            ...(isDev && !noHmr ? [require('react-hot-loader/babel')] : [])
                         ],
                         cacheDirectory: true,
                         cacheCompression: false,

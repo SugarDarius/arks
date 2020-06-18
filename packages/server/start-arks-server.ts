@@ -115,14 +115,23 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
             appComponentFilename: arksDefaultConfig.APP_COMPONENT_FILENAME,
             compiledClientSourceDirectoryPath: arksDefaultConfig.COMPILED_CLIENT_SOURCE_DIRECTORY_PATH,
             compiledServerSourceDirectoryPath: arksDefaultConfig.COMPILED_SERVER_SOURCE_DIRECTORY_PATH,
+            compiledClientBundleFilename: arksDefaultConfig.COMPILED_CLIENT_BUNDLE_FILENAME,
             compiledAppComponentFilename: arksDefaultConfig.COMPILED_APP_COMPONENT_FILENAME,
             reactAppClientEntryFilePath: arksDefaultConfig.REACT_APP_CLIENT_ENTRY_FILE_PATH,
             reactAppClientRootFilePath: arksDefaultConfig.REACT_APP_CLIENT_ROOT_FILE_PATH,
             reactAppRootNodeId: arksDefaultConfig.REACT_APP_ROOT_NODE_ID,
 
+            localUrlForTerminal,
         }, isDev, cwd);
 
-        await arksServer.setExpressApp();
+        await arksServer.setExpressApp(async (isFirstBuild: boolean): Promise<void> => {
+            if (isDev && isFirstBuild) {
+                ArksServerLogger.info(`${ServerMessage.openning} at ${localUrlForBrowser}!`);
+                ArksServerLogger.emptyLine();
+
+                await open(localUrlForBrowser);
+            }
+        });
         
         ArksServerLogger.info(ServerMessage.initialized);
         ArksServerLogger.emptyLine();
@@ -142,7 +151,7 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
             ArksServerLogger.info(ServerMessage.stopped);
             ArksServerLogger.emptyLine();
 
-            ArksServerLogger.info(ProcessMessage.uptime);
+            ArksServerLogger.info(ProcessMessage.uptime(process.uptime()));
             ArksServerLogger.emptyLine();
 
             ArksServerLogger.info('Bye Bye Developer!');
@@ -156,7 +165,7 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
 
         server.listen(PORT, HOST);
 
-        server.on('listening', async (): Promise<void> => {
+        server.on('listening', (): void => {
             ArksServerLogger.info(ServerMessage.listening);
             ArksServerLogger.emptyLine();
 
@@ -168,13 +177,6 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
                 ArksServerLogger.info(localUrlForTerminal);
             }
             ArksServerLogger.emptyLine();
-
-            if (isDev) {
-                ArksServerLogger.info(`${ServerMessage.openning} at ${localUrlForBrowser}!`);
-                ArksServerLogger.emptyLine();
-
-                await open(localUrlForBrowser);
-            }
         });
 
         server.on('error', (err: Error): void => {

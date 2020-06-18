@@ -5,10 +5,12 @@ const nodeEnv: string = getNodeEnv();
 
 export type TProcessMessage = {
     exiting: string;
-    uptime: string;
+    uptime: (time: number) => string;
 };
 
 export const ProcessMessage: TProcessMessage = {
     exiting: `Exiting NodeJS process pid:${process.pid} with exit code 1 as ${nodeEnv}!`,
-    uptime: `NodeJS process pid:${process.pid} was up since ${Math.floor(process.uptime())}s as ${nodeEnv}!`,
+    uptime: (time: number): string => {
+        return `NodeJS process pid:${process.pid} was up since ${Math.floor(time)}s as ${nodeEnv}!`;
+    },
 };

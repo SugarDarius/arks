@@ -56,13 +56,19 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
     ArksServerLogger.emptyLine();
 
     // TEMP - for now without Apollo GraphQL;
-    const content: string = ReactDOMServer.renderToStaticMarkup(
+    const content: string = ReactDOMServer.renderToString(
         <Router>
             {app}
         </Router>
     );
 
-    return ReactDOMServer.renderToStaticMarkup(
+    console.log();
+    console.log();
+    console.log('content', content);
+    console.log();
+    console.log();
+
+    return ReactDOMServer.renderToString(
         <Html 
             {...rest}
             content={content}

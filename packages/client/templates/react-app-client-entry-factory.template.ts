@@ -4,7 +4,7 @@ export const reactAppClientEntryFactoryTemplate = (nodeId: string): string => {
 import * as React from 'react';
 import { hydrate } from '@arks/client';
 
-import { Root } from './root';
+import Root from './root';
 
 hydrate(Root, '${nodeId}');
     `;

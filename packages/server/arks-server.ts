@@ -5,12 +5,14 @@ import {
     ArksWebpackCompiler,
     createArksWebpackCompiler,
     runArksWebpackCompiler,
+    createArksWebpackDevMiddleware,
+    createArksWebpackHotMiddleare,
 } from '@arks/compiler';
 import { 
     reactAppClientEntryFactoryTemplate,
     reactAppClientRootTemplateFactory,
-    ArksReactServerRenderer 
-} from '@arks/client';
+} from '@arks/client/templates';
+import { ArksReactServerRenderer } from '@arks/client/arks-server-renderer';
 
 import * as path from 'path';
 import * as fs from 'fs';
@@ -30,7 +32,6 @@ import {
     LivenessController,
     GraphQLController,
 } from './controllers';
-import { Server } from 'http';
 
 export interface ArksServerOptions {
     appName: string;
@@ -66,10 +67,13 @@ export interface ArksServerOptions {
     appComponentFilename: string;
     compiledClientSourceDirectoryPath: string;
     compiledServerSourceDirectoryPath: string;
+    compiledClientBundleFilename: string;
     compiledAppComponentFilename: string;
     reactAppClientEntryFilePath: string;
     reactAppClientRootFilePath: string;
     reactAppRootNodeId: string;
+
+    localUrlForTerminal: string;
 }
 
 export class ArksServer {
@@ -78,16 +82,17 @@ export class ArksServer {
     private _cwd: string;
 
     private app: express.Express;
-    private metricsController: MetricsController | null;
-    private livenessController: LivenessController | null;
-    private graphqlController: GraphQLController | null;
+    private metricsController: MetricsController | null = null;
+    private livenessController: LivenessController | null = null;
+    private graphqlController: GraphQLController | null = null;
+
+    private readonly _webpackDevMiddlewareBuildDirectory: string = `__webpack_dev_build`;
+
+    private serverArksWebpackCompiler: ArksWebpackCompiler | null = null;
+    private isFirstBuild: boolean = true;
 
     constructor(options: ArksServerOptions, isDev: boolean, cwd: string) {
         this.options = options;
-
-        this.metricsController = null;
-        this.livenessController = null;
-        this.graphqlController = null;
 
         this._isDev = isDev;
         this._cwd = cwd;
@@ -269,6 +274,34 @@ export class ArksServer {
         }
     }
 
+    private async runServerArksWebpackCompiler(): Promise<void> {
+        const spinner = ora({ 
+            text: `${ServerMessage.compilingReactAppForServerSideRendering}`, 
+            color: 'cyan',
+            spinner: 'dots',
+            stream: process.stdout,
+        });
+
+        try {
+            if (this.serverArksWebpackCompiler !== null) {
+                spinner.start();
+
+                const compilerResult = await runArksWebpackCompiler(this.serverArksWebpackCompiler);
+
+                spinner.stop();
+                ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingSuccess);
+                ArksServerLogger.emptyLine();
+
+                ArksServerLogger.logRaw(compilerResult.toString({ colors: true, chunks: true }), true);
+            }
+        }
+        catch (err) {
+            spinner.stop();
+            ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingError);
+            ArksServerLogger.error(err.message || err, err.stack);
+        }
+    }
+
     private async compilesFromAppRootForSSR(): Promise<void> {
         const {
             sourceDirectoryPath,
@@ -277,10 +310,9 @@ export class ArksServer {
             compiledServerSourceDirectoryPath,
         } = this.options;
 
-        let compiler: ArksWebpackCompiler | null = null;
         try {
             ArksServerLogger.info(ServerMessage.creatingServerArksWebpackCompiler);
-            compiler = createArksWebpackCompiler({
+            this.serverArksWebpackCompiler = createArksWebpackCompiler({
                 srcDirectoryPath:  path.resolve(this._cwd, `./${sourceDirectoryPath}`),
                 entryPointPath: path.resolve(this._cwd, `./${sourceDirectoryPath}/${appComponentFilename}`),
                 outputPath: path.resolve(this._cwd, `./${compiledServerSourceDirectoryPath}`),
@@ -295,46 +327,24 @@ export class ArksServer {
         }
         catch (err) {
             ArksServerLogger.info(ServerMessage.arksServerWebpackCompilerCreationError);
-            ArksServerLogger.error(err.message || '', err.stack);
-        }
-
-        ArksServerLogger.emptyLine();
-
-        const spinner = ora({ 
-            text: 'Compiling ...', 
-            color: 'cyan',
-            spinner: 'dots',
-            stream: process.stdout,
-        });
-
-        try {
-            if (compiler !== null) {
-                ArksServerLogger.info(ServerMessage.compilingReactAppForServerSideRendering);
-                spinner.start();
-
-                const compilerResult = await runArksWebpackCompiler(compiler);
-
-                spinner.stop();
-                ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingSuccess);
-                ArksServerLogger.emptyLine();
-
-                ArksServerLogger.logRaw(compilerResult.toString({ colors: true, chunks: true }), true);
-            }
-        }
-        catch (err) {
-            spinner.stop();
-            ArksServerLogger.info(ServerMessage.reactAppCompilationForServerSideRenderingError);
             ArksServerLogger.error(err.message || err, err.stack);
         }
 
         ArksServerLogger.emptyLine();
+
+        await this.runServerArksWebpackCompiler();
+
+        ArksServerLogger.emptyLine();
     }
 
-    private async compilesFromAppRootForCSR(): Promise<void> {
+    private async compilesFromAppRootForCSR(onCSRComlilationEnd?: (isFirstBuild: boolean) => void): Promise<void> {
         const { 
             reactAppClientEntryFilePath,
             reactAppClientRootFilePath,
             reactAppRootNodeId,
+            sourceDirectoryPath,
+            compiledClientBundleFilename,
+            localUrlForTerminal,
         } = this.options;
 
         try {
@@ -397,23 +407,83 @@ export class ArksServer {
             ArksServerLogger.error(err.message || err, err.stack);
         }
 
-        let compiler: ArksWebpackCompiler | null = null;
-        try {
+        const publicPath: string = `${localUrlForTerminal}${this._webpackDevMiddlewareBuildDirectory}`;
+        const hmrPath: string = `/__webpack_hmr`;
+        const hmrHearbeat: number = 2000;
 
+        let compiler: ArksWebpackCompiler | null = null;
+
+        try {
+            ArksServerLogger.info(ServerMessage.creatingClientArksWebpackCompiler);
+
+            compiler = createArksWebpackCompiler({
+                srcDirectoryPath: [
+                    path.resolve(this._cwd, `./.arks/client`),
+                    path.resolve(this._cwd, `./${sourceDirectoryPath}`)
+                ],
+                entryPointPath: path.resolve(this._cwd, `./${reactAppClientEntryFilePath}`),
+                hmrPath: `${localUrlForTerminal}__webpack_hmr`,
+                hmrHearbeat,
+                publicPath,
+                filename: compiledClientBundleFilename,
+                tsconfigPath: path.resolve(this._cwd, './tsconfig.json'),
+                useSourceMap: this._isDev,
+                profiling: !this._isDev,
+            });
+
+            if (this._isDev) {
+                compiler.hooks.done.tap('ArksClientWebpackComplierDonePlugin', async (): Promise<void> => {
+                    if (!!onCSRComlilationEnd) {
+                        onCSRComlilationEnd(this.isFirstBuild);
+                    }
+
+                    if (!this.isFirstBuild) {
+                        await this.runServerArksWebpackCompiler();
+                    }
+                    else {
+                        this.isFirstBuild = false;
+                    }
+                });
+            }
+            
+            ArksServerLogger.info(ServerMessage.clientArksWebpackCompilerCreated);
         }
         catch (err) {
-
+            ArksServerLogger.info(ServerMessage.arksClientWebpackCompilerCreationError);
+            ArksServerLogger.error(err.message || err, err.stack);
         }
 
         ArksServerLogger.emptyLine();
+
+        if (compiler !== null && this._isDev) {
+
+            // @ts-ignore
+            this.app.use(createArksWebpackDevMiddleware(compiler, {
+                publicPath,
+                stats: { 
+                    colors: true,
+                    chunks: true,
+                },
+                lazy: false,
+                serverSideRender: false,
+                headers: { 'Access-Control-Allow-Origin': 'same-origin' },
+            }));
+
+            this.app.use(createArksWebpackHotMiddleare(compiler, {
+                path: hmrPath,
+                heartbeat: hmrHearbeat,
+            }));
+        }
     }
 
-    async setExpressApp(): Promise<void> {
+    async setExpressApp(onCSRComlilationEnd?: (isFirstBuild: boolean) => void): Promise<void> {
         const { 
             appName,
             compiledAppComponentFilename,
             compiledServerSourceDirectoryPath,
             reactAppRootNodeId,
+            compiledClientBundleFilename,
+            localUrlForTerminal,
         } = this.options;
 
         this.addMiddlewares();
@@ -421,13 +491,15 @@ export class ArksServer {
         this.addControllers();
 
         await this.compilesFromAppRootForSSR();
-        await this.compilesFromAppRootForCSR();
+        await this.compilesFromAppRootForCSR(onCSRComlilationEnd);
 
         this.app.use('*', async (req: express.Request, res: express.Response): Promise<void> => {
             try {
                 const markups: string = await ArksReactServerRenderer({
                     title: appName,
-                    build: '',
+                    build: this._isDev ? 
+                        `${localUrlForTerminal}${this._webpackDevMiddlewareBuildDirectory}/${compiledClientBundleFilename}` : 
+                        `/build/${compiledClientBundleFilename}`,
                     publicPath: '/public',
                     reactAppRootNodeId,
                     url: req.url,
