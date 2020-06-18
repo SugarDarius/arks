@@ -78,7 +78,7 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
         ArksServerLogger.error(err.message || err, err.stack);
     }
 
-    return ReactDOMServer.renderToString(
+    return ReactDOMServer.renderToStaticMarkup(
         <Html 
             {...rest}
             apolloClient={apolloclient}
