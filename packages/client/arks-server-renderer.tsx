@@ -30,7 +30,7 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
          ...rest 
     } = options;
 
-    let AppRoot = (<div>No App component found</div>);
+    let app = (<div>No App component found</div>);
     const Router = createArksRouter(true, url);
 
     ArksServerLogger.info(ServerMessage.lookingForAppComponent);
@@ -39,11 +39,15 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
     if (isAppComponentExists) {
         ArksServerLogger.info(ServerMessage.appComponentFound);
         try {
+            ArksServerLogger.info(ServerMessage.importingAppComponent);
             const { default: App } = await import(path.resolve(cwd, `${compiledServerSourceDirectoryPath}/${compiledAppComponentFilename}`));
-            AppRoot = (<App />);
+            
+            ArksServerLogger.info(ServerMessage.appComponentImportSuccess);
+            app = (<App />);
         }
         catch (err) {
-            console.error(err);
+            ArksServerLogger.info(ServerMessage.appComponentImportError);
+            ArksServerLogger.error(err.message || err, err.stack);
         }
     }
     else {
@@ -54,7 +58,7 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
     // TEMP - for now without Apollo GraphQL;
     const content: string = ReactDOMServer.renderToStaticMarkup(
         <Router>
-            {AppRoot}
+            {app}
         </Router>
     );
 

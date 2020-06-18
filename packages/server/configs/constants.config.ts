@@ -41,4 +41,6 @@ export const APP_COMPONENT_FILENAME = 'app.tsx';
 export const COMPILED_CLIENT_SOURCE_DIRECTORY_PATH = '.arks/build';
 export const COMPILED_SERVER_SOURCE_DIRECTORY_PATH = '.arks/server';
 export const COMPILED_APP_COMPONENT_FILENAME = 'app.js';
+export const REACT_APP_CLIENT_ENTRY_FILE_PATH = '.arks/client/entry.tsx';
+export const REACT_APP_CLIENT_ROOT_FILE_PATH = '.arks/client/root.tsx';
 export const REACT_APP_ROOT_NODE_ID = 'arks-react-app';

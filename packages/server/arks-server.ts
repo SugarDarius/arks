@@ -6,9 +6,14 @@ import {
     createArksWebpackCompiler,
     runArksWebpackCompiler,
 } from '@arks/compiler';
-import { ArksReactServerRenderer } from '@arks/client';
+import { 
+    reactAppClientEntryFactoryTemplate,
+    reactAppClientRootTemplateFactory,
+    ArksReactServerRenderer 
+} from '@arks/client';
 
 import * as path from 'path';
+import * as fs from 'fs';
 
 import express from 'express';
 import helmet from 'helmet';
@@ -25,6 +30,7 @@ import {
     LivenessController,
     GraphQLController,
 } from './controllers';
+import { Server } from 'http';
 
 export interface ArksServerOptions {
     appName: string;
@@ -61,6 +67,8 @@ export interface ArksServerOptions {
     compiledClientSourceDirectoryPath: string;
     compiledServerSourceDirectoryPath: string;
     compiledAppComponentFilename: string;
+    reactAppClientEntryFilePath: string;
+    reactAppClientRootFilePath: string;
     reactAppRootNodeId: string;
 }
 
@@ -301,7 +309,6 @@ export class ArksServer {
 
         try {
             if (compiler !== null) {
-
                 ArksServerLogger.info(ServerMessage.compilingReactAppForServerSideRendering);
                 spinner.start();
 
@@ -323,6 +330,84 @@ export class ArksServer {
         ArksServerLogger.emptyLine();
     }
 
+    private async compilesFromAppRootForCSR(): Promise<void> {
+        const { 
+            reactAppClientEntryFilePath,
+            reactAppClientRootFilePath,
+            reactAppRootNodeId,
+        } = this.options;
+
+        try {
+            ArksServerLogger.info(ServerMessage.lookingForReactAppClientEntry);
+
+            const isReactAppClientEntryExists = fs.existsSync(path.resolve(this._cwd, `./${reactAppClientEntryFilePath}`));
+            if (isReactAppClientEntryExists) {
+                ArksServerLogger.info(ServerMessage.reactAppClientEntryFound);
+            }
+            else {
+                ArksServerLogger.info(ServerMessage.noReactAppClientEntryFound);
+                ArksServerLogger.info(ServerMessage.creatingReactAppClientEntry);
+
+                if (!fs.existsSync(path.resolve(this._cwd, './.arks/client'))) {
+                    await fs.promises.mkdir(path.resolve(this._cwd, './.arks/client'));
+                }
+
+                await fs.promises.writeFile(
+                    path.resolve(this._cwd, `./${reactAppClientEntryFilePath}`),
+                    reactAppClientEntryFactoryTemplate(reactAppRootNodeId),
+                    {
+                        encoding: 'utf-8'
+                    }
+                );
+                
+                ArksServerLogger.info(ServerMessage.reactAppClientEntryCreationSuccess);
+            }
+        }
+        catch (err) {
+            ArksServerLogger.info(ServerMessage.reactAppClientEntryCreationError)
+            ArksServerLogger.error(err.message || err, err.stack);
+        }
+
+        ArksServerLogger.emptyLine();
+
+        try {
+            ArksServerLogger.info(ServerMessage.lookingForReactAppClientRoot);
+
+            const isReactAppClientRootExists = fs.existsSync(path.resolve(this._cwd, `./${reactAppClientRootFilePath}`));
+            if (isReactAppClientRootExists) {
+                ArksServerLogger.info(ServerMessage.reactAppClientRootFound);
+            }
+            else {
+                ArksServerLogger.info(ServerMessage.noReactAppClientRootFound);
+                ArksServerLogger.info(ServerMessage.creatingReactAppClientRoot);
+
+                await fs.promises.writeFile(
+                    path.resolve(this._cwd, `./${reactAppClientRootFilePath}`),
+                    reactAppClientRootTemplateFactory(),
+                    {
+                        encoding: 'utf-8'
+                    }
+                );
+
+                ArksServerLogger.info(ServerMessage.reactAppClientRootCreationSuccess);
+            }
+        }
+        catch (err) {
+            ArksServerLogger.info(ServerMessage.reactAppClientRootCreationError)
+            ArksServerLogger.error(err.message || err, err.stack);
+        }
+
+        let compiler: ArksWebpackCompiler | null = null;
+        try {
+
+        }
+        catch (err) {
+
+        }
+
+        ArksServerLogger.emptyLine();
+    }
+
     async setExpressApp(): Promise<void> {
         const { 
             appName,
@@ -336,6 +421,7 @@ export class ArksServer {
         this.addControllers();
 
         await this.compilesFromAppRootForSSR();
+        await this.compilesFromAppRootForCSR();
 
         this.app.use('*', async (req: express.Request, res: express.Response): Promise<void> => {
             try {

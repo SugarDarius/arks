@@ -41,6 +41,7 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
         }
 
         const isDotEnvFileExists: boolean = fs.existsSync(path.resolve(cwd, `./${arksDefaultConfig.DOT_ENV_FILE}`));
+        
         or(isDotEnvFileExists, () => {
             ArksServerLogger.info(ServerMessage.usingDotEnvFile);
             dotenv.config({ path: path.resolve(cwd, `./${arksDefaultConfig.DOT_ENV_FILE}`) });
@@ -50,15 +51,20 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
 
         let arksJsonFile: { [key: string]: any } = {};
         const isArkJsonFileExists: boolean = fs.existsSync(path.resolve(cwd, `./${arksDefaultConfig.CONFIG_FILE}`));
+        
         or(isArkJsonFileExists, () => {
             ArksServerLogger.info(ServerMessage.usingArksJsonFile);
             arksJsonFile = JSON.parse(
                 fs.readFileSync(path.resolve(cwd, `./${arksDefaultConfig.CONFIG_FILE}`), 
-                { encoding: 'utf-8', flag: 'r'}
+                { 
+                    encoding: 'utf-8', 
+                    flag: 'r'
+                }
             ).toString());
         }, () => {
             ArksServerLogger.info(ServerMessage.noArksJsonFile);
         });
+
         ArksServerLogger.emptyLine();
 
         ArksServerLogger.info(ServerMessage.initializing);
@@ -110,6 +116,8 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
             compiledClientSourceDirectoryPath: arksDefaultConfig.COMPILED_CLIENT_SOURCE_DIRECTORY_PATH,
             compiledServerSourceDirectoryPath: arksDefaultConfig.COMPILED_SERVER_SOURCE_DIRECTORY_PATH,
             compiledAppComponentFilename: arksDefaultConfig.COMPILED_APP_COMPONENT_FILENAME,
+            reactAppClientEntryFilePath: arksDefaultConfig.REACT_APP_CLIENT_ENTRY_FILE_PATH,
+            reactAppClientRootFilePath: arksDefaultConfig.REACT_APP_CLIENT_ROOT_FILE_PATH,
             reactAppRootNodeId: arksDefaultConfig.REACT_APP_ROOT_NODE_ID,
 
         }, isDev, cwd);
