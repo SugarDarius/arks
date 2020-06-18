@@ -9,10 +9,12 @@
         "outDir": "./build",
         "declaration": false,
         "jsx": "react",
-        "lib": ["esnext", "DOM"]
+        "lib": ["esnext", "DOM"],
     },
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        ".arks/client/**/*",
+        "./globals.d.ts"
     ],
-    "exclude": [ "node_modules" ]
+    "exclude": [ "node_modules" ],
 }

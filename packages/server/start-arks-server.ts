@@ -120,6 +120,7 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
             reactAppClientEntryFilePath: arksDefaultConfig.REACT_APP_CLIENT_ENTRY_FILE_PATH,
             reactAppClientRootFilePath: arksDefaultConfig.REACT_APP_CLIENT_ROOT_FILE_PATH,
             reactAppRootNodeId: arksDefaultConfig.REACT_APP_ROOT_NODE_ID,
+            internalGraphQLEndpoint: arksDefaultConfig.INTERNAL_GRAPHQL_ENDPOINT,
 
             localUrlForTerminal,
         }, isDev, cwd);

@@ -1,0 +1,1 @@
+declare var __APOLLO_STATE__: any;

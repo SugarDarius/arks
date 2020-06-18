@@ -72,6 +72,7 @@ export interface ArksServerOptions {
     reactAppClientEntryFilePath: string;
     reactAppClientRootFilePath: string;
     reactAppRootNodeId: string;
+    internalGraphQLEndpoint: string;
 
     localUrlForTerminal: string;
 }
@@ -145,10 +146,13 @@ export class ArksServer {
     }
 
     private setGraphQLController(): void {
-        const { graphqlApiEndpoint } = this.options;
+        const {
+            internalGraphQLEndpoint, 
+            graphqlApiEndpoint 
+        } = this.options;
 
         ArksServerLogger.info(ServerMessage.creatingGraphQLController);
-        this.graphqlController = new GraphQLController('/graphql', graphqlApiEndpoint);
+        this.graphqlController = new GraphQLController(internalGraphQLEndpoint, graphqlApiEndpoint);
         ArksServerLogger.info(ServerMessage.graphQlControllerCreated);
         ArksServerLogger.emptyLine();
     }
@@ -393,7 +397,7 @@ export class ArksServer {
 
                 await fs.promises.writeFile(
                     path.resolve(this._cwd, `./${reactAppClientRootFilePath}`),
-                    reactAppClientRootTemplateFactory(),
+                    reactAppClientRootTemplateFactory('/graphql'),
                     {
                         encoding: 'utf-8'
                     }
@@ -484,6 +488,7 @@ export class ArksServer {
             reactAppRootNodeId,
             compiledClientBundleFilename,
             localUrlForTerminal,
+            internalGraphQLEndpoint,
         } = this.options;
 
         this.addMiddlewares();
@@ -502,13 +507,14 @@ export class ArksServer {
                         `/build/${compiledClientBundleFilename}`,
                     publicPath: '/public',
                     reactAppRootNodeId,
+                    internalGraphQLEndpoint,
                     url: req.url,
                     cwd: this._cwd,
                     compiledServerSourceDirectoryPath: `${compiledServerSourceDirectoryPath}`,
                     compiledAppComponentFilename,
                 });
 
-                res.status(200).send(`<!doctype html>\n${markups}`);
+                res.status(200).send(`<!doctype html>\n${markups}`).end();
             }
             catch (err) {
                 ArksServerLogger.error(err.message || '', err.stack);

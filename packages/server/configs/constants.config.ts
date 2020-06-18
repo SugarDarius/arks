@@ -45,3 +45,4 @@ export const COMPILED_APP_COMPONENT_FILENAME = 'app.js';
 export const REACT_APP_CLIENT_ENTRY_FILE_PATH = '.arks/client/entry.tsx';
 export const REACT_APP_CLIENT_ROOT_FILE_PATH = '.arks/client/root.tsx';
 export const REACT_APP_ROOT_NODE_ID = 'arks-react-app';
+export const INTERNAL_GRAPHQL_ENDPOINT = '/graphql';

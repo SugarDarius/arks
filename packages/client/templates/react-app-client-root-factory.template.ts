@@ -1,19 +1,23 @@
 
-export const reactAppClientRootTemplateFactory = (): string => {
+export const reactAppClientRootTemplateFactory = (graphqlEndpoint: string): string => {
     return `
 import * as React from 'react';
-import { createArksRouter } from '@arks/client';
+import { ApolloProvider } from '@apollo/react-common';
+import { createArksGraphQLClient, createArksRouter } from '@arks/client';
 import { hot } from 'react-hot-loader/root';
 
 import App from '../../src/app';
 
 function Root(): React.ReactElement {
-    // TEMP - for now without Apollo GraphQL;
+    const apolloClient = createArksGraphQLClient('${graphqlEndpoint}', window.__APOLLO_STATE__ || {});
     const Router = createArksRouter(false);
+    
     return (
-        <Router>
-            <App />
-        </Router>
+        <ApolloProvider client={apolloClient}>
+            <Router>
+                <App />
+            </Router>
+        </ApolloProvider>
     );
 }
 

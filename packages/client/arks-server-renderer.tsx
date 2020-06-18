@@ -1,6 +1,9 @@
 import { ServerMessage } from '@arks/common';
 import { ArksServerLogger } from '@arks/logger';
 
+import { ApolloProvider } from '@apollo/react-common';
+import { renderToStringWithData } from '@apollo/react-ssr';
+
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -8,6 +11,7 @@ import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 
 import { Html } from './dom';
+import { createArksGraphQLClient } from './create-arks-apollo-client';
 import { createArksRouter } from './create-arks-router';
 
 export type RendererOptions = {
@@ -15,6 +19,7 @@ export type RendererOptions = {
     build: string;
     publicPath: string;
     reactAppRootNodeId: string;
+    internalGraphQLEndpoint: string;
     url: string;
     cwd: string;
     compiledServerSourceDirectoryPath: string;
@@ -27,11 +32,11 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
         cwd,
         compiledServerSourceDirectoryPath,
         compiledAppComponentFilename,
+        internalGraphQLEndpoint,
          ...rest 
     } = options;
 
     let app = (<div>No App component found</div>);
-    const Router = createArksRouter(true, url);
 
     ArksServerLogger.info(ServerMessage.lookingForAppComponent);
     const isAppComponentExists: boolean = fs.existsSync(path.resolve(cwd, `${compiledServerSourceDirectoryPath}/${compiledAppComponentFilename}`));
@@ -53,24 +58,30 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
     else {
         ArksServerLogger.info(ServerMessage.noAppComponentFound);
     }
+    
     ArksServerLogger.emptyLine();
 
-    // TEMP - for now without Apollo GraphQL;
-    const content: string = ReactDOMServer.renderToString(
-        <Router>
-            {app}
-        </Router>
-    );
+    const apolloclient = createArksGraphQLClient(internalGraphQLEndpoint, {}, true);
+    const Router = createArksRouter(true, url);
 
-    console.log();
-    console.log();
-    console.log('content', content);
-    console.log();
-    console.log();
+    let content = '';
+    try {
+        content = await renderToStringWithData((
+            <ApolloProvider client={apolloclient}>
+                <Router>
+                    {app}
+                </Router>
+            </ApolloProvider>
+        ));
+    }
+    catch (err) {
+        ArksServerLogger.error(err.message || err, err.stack);
+    }
 
     return ReactDOMServer.renderToString(
         <Html 
             {...rest}
+            apolloClient={apolloclient}
             content={content}
         />
     );
