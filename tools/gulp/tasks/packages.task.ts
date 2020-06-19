@@ -50,6 +50,11 @@ projects.set('config', createProject(path.resolve(
     `${source}/config/tsconfig.json`
 )));
 
+projects.set('react', createProject(path.resolve(
+    __dirname,
+    `${source}/react/tsconfig.json`
+)));
+
 projects.set('client', createProject(path.resolve(
     __dirname,
     `${source}/client/tsconfig.json`

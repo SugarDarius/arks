@@ -54,7 +54,7 @@ Here is the list of all availbles and packages :
 | config                          | Arks config                                                 | Yes            |
 | server                          | Arks server implementation                                  | Yes            |
 | client                          | Arks browser clients functions and components               | Yes            |
-| hooks                           | Arks React hooks                                            | No             |
+| react                           | Arks React components, hooks, utilities, ...                | partial        |
 
 
 ## Known Bugs

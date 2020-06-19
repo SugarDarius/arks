@@ -1,5 +1,5 @@
 {
-    "name": "@arks/hooks",
+    "name": "@arks/react",
     "version": "1.0.0",
     "description": "An opiniated React framework for isomorphic apps with Apollo GraphQL ",
     "main": "./index.js",
