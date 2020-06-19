@@ -289,7 +289,6 @@ export class ArksServer {
         try {
             if (this.serverArksWebpackCompiler !== null) {
                 spinner.start();
-
                 const compilerResult = await runArksWebpackCompiler(this.serverArksWebpackCompiler);
 
                 spinner.stop();

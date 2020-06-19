@@ -1,11 +1,7 @@
 
-import { getNodeEnv } from '@arks/utils';
-
 import webpack from 'webpack';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-
-const nodeEnv = getNodeEnv();
 
 export type CreateWebpackConfigOptions = {
     srcDirectoryPath: string | string[];
@@ -21,6 +17,7 @@ export type CreateWebpackConfigOptions = {
     useExternals?: boolean;
     profiling?: boolean;
     useSourceMap?: boolean;
+    isProd?: boolean;
 };
 
 export function createWebpackConfig(options: CreateWebpackConfigOptions): webpack.Configuration {
@@ -37,12 +34,12 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
         useExternals,
         profiling,
         useSourceMap,
-        noHmr
+        noHmr,
+        isProd,
     } = options;
 
-    const isDev: boolean = nodeEnv === 'development';
-    const isProd: boolean = nodeEnv === 'production';
-    const isProdProfiling: boolean = isProd && !!profiling;
+    const isDev: boolean = !isProd;
+    const isProdProfiling: boolean = !!isProd && !!profiling;
 
     const shouldUseSourceMap: boolean = !!useSourceMap;
 
