@@ -3,6 +3,7 @@ import { ArksServerLogger } from '@arks/logger';
 
 import { ApolloProvider } from '@apollo/react-common';
 import { renderToStringWithData } from '@apollo/react-ssr';
+import { StaticRouter } from 'react-router-dom';
 
 import * as path from 'path';
 import * as fs from 'fs';
@@ -12,7 +13,6 @@ import * as ReactDOMServer from 'react-dom/server';
 
 import { Html } from './dom';
 import { createArksGraphQLClient } from './create-arks-apollo-client';
-import { createArksRouter } from './create-arks-router';
 
 export type RendererOptions = {
     title: string;
@@ -36,7 +36,7 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
          ...rest 
     } = options;
 
-    let app = (<div>No App component found</div>);
+    let app = <div>No App component found</div>;
 
     ArksServerLogger.info(ServerMessage.lookingForAppComponent);
     const isAppComponentExists: boolean = fs.existsSync(path.resolve(cwd, `${compiledServerSourceDirectoryPath}/${compiledAppComponentFilename}`));
@@ -45,10 +45,11 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
         ArksServerLogger.info(ServerMessage.appComponentFound);
         try {
             ArksServerLogger.info(ServerMessage.importingAppComponent);
+
             const { default: App } = await import(path.resolve(cwd, `${compiledServerSourceDirectoryPath}/${compiledAppComponentFilename}`));
+            app = (<App />);
             
             ArksServerLogger.info(ServerMessage.appComponentImportSuccess);
-            app = (<App />);
         }
         catch (err) {
             ArksServerLogger.info(ServerMessage.appComponentImportError);
@@ -62,17 +63,16 @@ export async function ArksReactServerRenderer(options: RendererOptions): Promise
     ArksServerLogger.emptyLine();
 
     const apolloclient = createArksGraphQLClient(internalGraphQLEndpoint, {}, true);
-    const Router = createArksRouter(true, url);
-
     let content = '';
+
     try {
         content = await renderToStringWithData((
             <ApolloProvider client={apolloclient}>
-                <Router>
+                <StaticRouter context={{}} location={url}>
                     {app}
-                </Router>
+                </StaticRouter>
             </ApolloProvider>
-        ));
+         ));
     }
     catch (err) {
         ArksServerLogger.error(err.message || err, err.stack);

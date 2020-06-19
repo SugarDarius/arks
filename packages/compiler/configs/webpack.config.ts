@@ -18,7 +18,7 @@ export type CreateWebpackConfigOptions = {
     publicPath?: string;
     useUmdLibrary?: boolean;
     noHmr?: boolean;
-    useWatch?: boolean;
+    useExternals?: boolean;
     profiling?: boolean;
     useSourceMap?: boolean;
 };
@@ -34,7 +34,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
         tsconfigPath,
         publicPath,
         useUmdLibrary,
-        useWatch,
+        useExternals,
         profiling,
         useSourceMap,
         noHmr
@@ -53,7 +53,6 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
         bail: isProd,
         
         devtool: isDev ? 'cheap-module-source-map' : shouldUseSourceMap ? 'source-map' : false,
-        watch: useWatch,
 
         entry: isDev && !noHmr ? [
             `react-hot-loader/patch`,
@@ -67,6 +66,15 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
             filename,
             ...(useUmdLibrary ? { libraryTarget: 'umd', globalObject: 'this' } : {})
         },
+
+        ...( useExternals ? { 
+            externals: {
+                'react': 'react',
+                'react-dom': 'react-dom',
+                'react-router': 'react-router',
+                'react-router-dom': 'react-router-dom',
+            }
+        } : { }),
 
         resolve: {
             extensions: [ '.ts', '.tsx', '.js', '.jsx' ],

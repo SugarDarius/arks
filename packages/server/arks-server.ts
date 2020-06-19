@@ -323,6 +323,7 @@ export class ArksServer {
                 filename: compiledAppComponentFilename,
                 tsconfigPath: path.resolve(this._cwd, './tsconfig.json'),
                 noHmr: true,
+                useExternals: true,
                 useUmdLibrary: true,
                 useSourceMap: this._isDev,
                 profiling: !this._isDev,
@@ -497,7 +498,7 @@ export class ArksServer {
             await this.compilesFromAppRootForCSR(onCSRComlilationEnd);
         }
 
-        this.app.use('*', async (req: express.Request, res: express.Response): Promise<void> => {
+        this.app.get('*', async (req: express.Request, res: express.Response): Promise<void> => {
             try {
                 const markups: string = await ArksReactServerRenderer({
                     title: appName,

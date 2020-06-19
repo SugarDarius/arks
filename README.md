@@ -18,7 +18,11 @@ An opiniated React framework for isomorphic apps built on top of React with Reac
 ## Table of Contents
 
 - [Getting Started](#getting-started)
+- [Arks CLI](#arks-cli)
+- [Arks availables packages](#arks-availables-packages)
 - [Known Bugs](known-bugs)
+- [Built With](#built-with)
+- [Authors](#authors)
 
 ## Getting Started
 Here you can fin all the instructions you need to know to get started with Arks.
@@ -35,7 +39,8 @@ Here you can fin all the instructions you need to know to get started with Arks.
 npm install -g @arks/cli
 ```
 
-### Arks CLI commands
+## Arks CLI
+The CLI of Arks is based on NPM.
 
 Start a project as development
 ```bash
