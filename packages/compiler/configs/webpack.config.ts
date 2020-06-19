@@ -138,6 +138,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
             minimize: isProd,
             minimizer: [
                 new TerserPlugin({
+                    extractComments: false,
                     terserOptions: {
                         parse: {
                             ecma: 8,

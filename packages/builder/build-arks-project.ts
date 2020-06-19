@@ -23,8 +23,11 @@ export async function buildArksProject(): Promise<void> {
         }, cwd);
         
         await arksProjectBuilder.runBuilder();
-        
+
         ArksServerLogger.info(BuilderMessage.projectBuilded);
+        ArksServerLogger.emptyLine();
+
+        ArksServerLogger.info(ProcessMessage.uptime(process.uptime()));
         ArksServerLogger.emptyLine();
 
         const onProcessSignal = (signal: NodeJS.Signals): void => {

@@ -3,6 +3,7 @@ export type TBuilderMessage = {
     projectBuilded: string;
     buildProjectError: string;
     buildStopped: string;
+    buildTotalTime: (seconds: number) => string;
 
     creatingServerArksWebpackCompiler: string;
     serverArksWebpackCompilerCreated: string;
@@ -25,19 +26,22 @@ export type TBuilderMessage = {
 
 export const BuilderMessage: TBuilderMessage = {
     startBuildingProject: `Starting building project!`,
-    projectBuilded: `Project builed!`,
+    projectBuilded: `Project builded!`,
     buildProjectError: `Error while building project!`,
     buildStopped: `Project building is stopped!`,
+    buildTotalTime: (seconds: number): string => {
+        return `Project build took ${seconds}s!`;
+    },
 
     creatingServerArksWebpackCompiler: `Creating server Arks webpack compiler!`,
-    serverArksWebpackCompilerCreated: `Server Arks webpack compiler create!`,
+    serverArksWebpackCompilerCreated: `Server Arks webpack compiler created!`,
     arksServerWebpackCompilerCreationError: `Server Arks webpack compiler creation error`,
     compilingReactAppForServerSideRendering: `Compiling React app for server side rendering`,
     reactAppCompilationForServerSideRenderingSuccess: `React app compilation for server side rendering success`,
     reactAppCompilationForServerSideRenderingError: `React app compilation for server side rendering error`,
 
     creatingClientArksWebpackCompiler: `Creating client Arks webpack compiler!`,
-    clientArksWebpackCompilerCreated: `Client Arks webpack compiler create!`,
+    clientArksWebpackCompilerCreated: `Client Arks webpack compiler created!`,
     arksClientWebpackCompilerCreationError: `Client Arks webpack compiler creation error`,
     compilingReactAppForClientSideRendering: `Compiling React app for client side rendering`,
     reactAppCompilationForClientSideRenderingSuccess: `React app compilation for server side rendering success`,
