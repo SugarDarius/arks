@@ -1,7 +1,7 @@
 {
     "name": "@arks/misc",
     "version": "1.0.0",
-    "description": "An opiniated React framework for isomorphic apps with Apollo GraphQL ",
+    "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
     "types": "./index.d.ts",
     "homepage": "https://github.com/SugarDarius/arks",

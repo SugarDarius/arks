@@ -65,6 +65,12 @@ projects.set('server', createProject(path.resolve(
     `${source}/server/tsconfig.json`
 )));
 
+projects.set('builder', createProject(path.resolve(
+    __dirname,
+    `${source}/builder/tsconfig.json`
+)));
+
+
 const packages: string[] = [ ...Array.from(projects.keys()) ];
 
 packagesList.forEach((name: string): void => {
