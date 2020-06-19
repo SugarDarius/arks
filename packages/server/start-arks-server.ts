@@ -192,9 +192,9 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
             process.exit(1);
         });
     }
-    catch (error) {
+    catch (err) {
         ArksServerLogger.info(ServerMessage.startingError);
-        ArksServerLogger.error(error.message || '', error.stack);
+        ArksServerLogger.error(err.message || err, err.stack);
         ArksServerLogger.emptyLine();
 
         ArksServerLogger.info(ProcessMessage.exiting);

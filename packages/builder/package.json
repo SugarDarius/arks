@@ -30,6 +30,7 @@
         "@arks/utils": "1.0.0",
         "@arks/logger": "1.0.0",
         "@arks/common": "1.0.0",
+        "@arks/config": "1.0.0",
         "@arks/compiler": "1.0.0",
         "ora": "4.0.4"
     }

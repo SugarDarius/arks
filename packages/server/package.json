@@ -38,6 +38,7 @@
         "@arks/utils": "1.0.0",
         "@arks/logger": "1.0.0",
         "@arks/common": "1.0.0",
+        "@arks/config": "1.0.0",
         "@arks/compiler": "1.0.0",
         "@arks/client": "1.0.0",
         "body-parser": "1.19.0",

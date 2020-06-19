@@ -342,7 +342,7 @@ export class ArksServer {
         ArksServerLogger.emptyLine();
     }
 
-    private async compilesFromAppRootForCSR(onCSRComlilationEnd?: (isFirstBuild: boolean) => void): Promise<void> {
+    private async compilesFromAClientEntryForCSR(onCSRComlilationEnd?: (isFirstBuild: boolean) => void): Promise<void> {
         const { 
             reactAppClientEntryFilePath,
             reactAppClientRootFilePath,
@@ -495,7 +495,7 @@ export class ArksServer {
 
         if (this._isDev) {
             await this.compilesFromAppRootForSSR();
-            await this.compilesFromAppRootForCSR(onCSRComlilationEnd);
+            await this.compilesFromAClientEntryForCSR(onCSRComlilationEnd);
         }
 
         this.app.get('*', async (req: express.Request, res: express.Response): Promise<void> => {
