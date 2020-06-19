@@ -1,9 +1,12 @@
 <h1 align="center">
-  <a href="https://www.arks.io">Welcome to Arks</a>
+  <a href="">Welcome to Arks</a>
 </h1>
 
 <p align="center">
-    Do more with less<br />
+  <img width="400" align="center" src="./doc/img/arks-logo.png" />
+</p>
+
+<p align="center">
     This the offical repository of the Arks framework.
 </p>
 
@@ -54,11 +57,11 @@ Here is the list of all availbles and packages :
 | config                          | Arks config                                                 | Yes            |
 | server                          | Arks server implementation                                  | Yes            |
 | client                          | Arks browser clients functions and components               | Yes            |
-| react                           | Arks React components, hooks, utilities, ...                | partial        |
+| react                           | Arks React components, hooks, utilities, ...                | Partial        |
 
 
 ## Known Bugs
-Here is the list of know bugs of Arks :
+Here is the list of known bugs of Arks :
 
 | Name                            | Description                                                 | Corrected    |
 | ------------------------------- | ----------------------------------------------------------- | -----------: |
