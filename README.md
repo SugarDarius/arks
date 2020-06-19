@@ -51,7 +51,7 @@ Here is the list of all availbles and packages :
 | monitors                        | Monitors used in an Arks server                             | Yes            |
 | logger                          | Arks custom logger                                          | Yes            |
 | compiler                        | Arks webpack compiler                                       | Yes            |
-| compiler                        | Arks webpack compiler                                       | Yes            |
+| config                          | Arks config                                                 | Yes            |
 | server                          | Arks server implementation                                  | Yes            |
 | client                          | Arks browser clients functions and components               | Yes            |
 | hooks                           | Arks React hooks                                            | No             |

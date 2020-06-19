@@ -10,6 +10,7 @@ import {
     isNumber,
     isBoolean,
 } from '@arks/utils';
+import * as ArksDefaultConfig from '@arks/config';
 
 import * as path from 'path';
 import * as fs from 'fs';
@@ -18,7 +19,6 @@ import * as http from 'http';
 
 import open from 'open';
 
-import * as arksDefaultConfig from './configs';
 import { createArksServer } from './create-arks-server';
 
 export type StartArksServerOptions = {
@@ -40,22 +40,22 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
             ArksServerLogger.emptyLine();
         }
 
-        const isDotEnvFileExists: boolean = fs.existsSync(path.resolve(cwd, `./${arksDefaultConfig.DOT_ENV_FILE}`));
+        const isDotEnvFileExists: boolean = fs.existsSync(path.resolve(cwd, `./${ArksDefaultConfig.DOT_ENV_FILE}`));
         
         or(isDotEnvFileExists, () => {
             ArksServerLogger.info(ServerMessage.usingDotEnvFile);
-            dotenv.config({ path: path.resolve(cwd, `./${arksDefaultConfig.DOT_ENV_FILE}`) });
+            dotenv.config({ path: path.resolve(cwd, `./${ArksDefaultConfig.DOT_ENV_FILE}`) });
         }, () => {
             ArksServerLogger.info(ServerMessage.noDotEnvFile);
         });
 
         let arksJsonFile: { [key: string]: any } = {};
-        const isArkJsonFileExists: boolean = fs.existsSync(path.resolve(cwd, `./${arksDefaultConfig.CONFIG_FILE}`));
+        const isArkJsonFileExists: boolean = fs.existsSync(path.resolve(cwd, `./${ArksDefaultConfig.CONFIG_FILE}`));
         
         or(isArkJsonFileExists, () => {
             ArksServerLogger.info(ServerMessage.usingArksJsonFile);
             arksJsonFile = JSON.parse(
-                fs.readFileSync(path.resolve(cwd, `./${arksDefaultConfig.CONFIG_FILE}`), 
+                fs.readFileSync(path.resolve(cwd, `./${ArksDefaultConfig.CONFIG_FILE}`), 
                 { 
                     encoding: 'utf-8', 
                     flag: 'r'
@@ -70,9 +70,10 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
         ArksServerLogger.info(ServerMessage.initializing);
         ArksServerLogger.emptyLine();
 
-        const PORT = normalizePort(options.port || process.env.PORT || `${arksDefaultConfig.PORT}`, arksDefaultConfig.PORT);
-        const HOST = options.host || process.env.HOST || arksDefaultConfig.HOST;
-        const PROTOCOL = options.protocol || process.env.PROTOCOL || arksDefaultConfig.PROTOCOL;
+        // CLI command option > ENV > Default config
+        const PORT = normalizePort(options.port || process.env.PORT || `${ArksDefaultConfig.PORT}`, ArksDefaultConfig.PORT);
+        const HOST = options.host || process.env.HOST || ArksDefaultConfig.HOST;
+        const PROTOCOL = options.protocol || process.env.PROTOCOL || ArksDefaultConfig.PROTOCOL;
 
         const {
             lanUrlForTerminal,
@@ -81,46 +82,49 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
         } = prepareUrls(PROTOCOL, HOST, PORT);
 
         const arksServer = createArksServer({
-            appName: !isNil(arksJsonFile.appName) && isString(arksJsonFile.appName) ? arksJsonFile.appName : arksDefaultConfig.APP_NAME,
+            // From Arks json file config
+            appName: !isNil(arksJsonFile.appName) && isString(arksJsonFile.appName) ? arksJsonFile.appName : ArksDefaultConfig.APP_NAME,
 
-            noMetrics: !isNil(arksJsonFile.noMetrics) && isBoolean(arksJsonFile.noMetrics) ? arksJsonFile.noMetrics : arksDefaultConfig.NO_METRICS,
-            noLiveness: !isNil(arksJsonFile.noLiveness) && isBoolean(arksJsonFile.noLiveness) ? arksJsonFile.noLiveness : arksDefaultConfig.NO_LIVENESS,
+            noMetrics: !isNil(arksJsonFile.noMetrics) && isBoolean(arksJsonFile.noMetrics) ? arksJsonFile.noMetrics : ArksDefaultConfig.NO_METRICS,
+            noLiveness: !isNil(arksJsonFile.noLiveness) && isBoolean(arksJsonFile.noLiveness) ? arksJsonFile.noLiveness : ArksDefaultConfig.NO_LIVENESS,
 
-            metricsEndpoint: !isNil(arksJsonFile.metricsEndpoint) && isString(arksJsonFile.metricsEndpoint) ? arksJsonFile.metricsEndpoint : arksDefaultConfig.METRICS_ENDPOINT,
-            livenessEndpoint: !isNil(arksJsonFile.livenessEndpoint) && isString(arksJsonFile.livenessEndpoint) ? arksJsonFile.livenessEndpoint : arksDefaultConfig.LIVENESS_ENDPOINT,
+            metricsEndpoint: !isNil(arksJsonFile.metricsEndpoint) && isString(arksJsonFile.metricsEndpoint) ? arksJsonFile.metricsEndpoint : ArksDefaultConfig.METRICS_ENDPOINT,
+            livenessEndpoint: !isNil(arksJsonFile.livenessEndpoint) && isString(arksJsonFile.livenessEndpoint) ? arksJsonFile.livenessEndpoint : ArksDefaultConfig.LIVENESS_ENDPOINT,
 
-            noHelmet: !isNil(arksJsonFile.noHelmet) && isBoolean(arksJsonFile.noHelmet) ? arksJsonFile.noHelmet : arksDefaultConfig.NO_HELMET,
-            noCors: !isNil(arksJsonFile.noCors) && isBoolean(arksJsonFile.noCors) ? arksJsonFile.noCors : arksDefaultConfig.NO_CORS,
-            noLimit: !isNil(arksJsonFile.noLimit) && isBoolean(arksJsonFile.noLimit) ? arksJsonFile.noLimit : arksDefaultConfig.NO_LIMIT,
-            noBodyParser: !isNil(arksJsonFile.noBodyParser) && isBoolean(arksJsonFile.noBodyParser) ? arksJsonFile.noBodyParser : arksDefaultConfig.NO_BODY_PARSER,
-            noCookieParser: !isNil(arksJsonFile.noCookieParser) && isBoolean(arksJsonFile.noCookieParser) ? arksJsonFile.noCookieParser : arksDefaultConfig.NO_COOKIE_PARSER,
-            noCompression: !isNil(arksJsonFile.noCompression) && isBoolean(arksJsonFile.noCompression) ? arksJsonFile.noCompression : arksDefaultConfig.NO_COMPRESSION,
+            noHelmet: !isNil(arksJsonFile.noHelmet) && isBoolean(arksJsonFile.noHelmet) ? arksJsonFile.noHelmet : ArksDefaultConfig.NO_HELMET,
+            noCors: !isNil(arksJsonFile.noCors) && isBoolean(arksJsonFile.noCors) ? arksJsonFile.noCors : ArksDefaultConfig.NO_CORS,
+            noLimit: !isNil(arksJsonFile.noLimit) && isBoolean(arksJsonFile.noLimit) ? arksJsonFile.noLimit : ArksDefaultConfig.NO_LIMIT,
+            noBodyParser: !isNil(arksJsonFile.noBodyParser) && isBoolean(arksJsonFile.noBodyParser) ? arksJsonFile.noBodyParser : ArksDefaultConfig.NO_BODY_PARSER,
+            noCookieParser: !isNil(arksJsonFile.noCookieParser) && isBoolean(arksJsonFile.noCookieParser) ? arksJsonFile.noCookieParser : ArksDefaultConfig.NO_COOKIE_PARSER,
+            noCompression: !isNil(arksJsonFile.noCompression) && isBoolean(arksJsonFile.noCompression) ? arksJsonFile.noCompression : ArksDefaultConfig.NO_COMPRESSION,
             
-            noLogger: !isNil(arksJsonFile.noLogger) && isBoolean(arksJsonFile.noLogger) ? arksJsonFile.noLogger : arksDefaultConfig.NO_LOGGER,
+            noLogger: !isNil(arksJsonFile.noLogger) && isBoolean(arksJsonFile.noLogger) ? arksJsonFile.noLogger : ArksDefaultConfig.NO_LOGGER,
 
-            publicDirectoryPath: !isNil(arksJsonFile.publicDirectoryPath) && isString(arksJsonFile.publicDirectoryPath) ? arksJsonFile.publicDirectoryPath : arksDefaultConfig.PUBLIC_DIRECTORY_PATH,
-
+            // From CLI commmand option or ENV
             port: PORT,
             host: HOST,
             protocol: PROTOCOL,
 
-            graphqlApiEndpoint: process.env.GRAPHQL_API_ENDPOINT || !isNil(arksJsonFile.graphqlApiEndpoint) && isString(arksJsonFile.graphqlApiEndpoint) ? arksJsonFile.graphqlApiEndpoint : arksDefaultConfig.GRAPHQL_API_ENDPOINT,
+            // From ENV config
+            graphqlApiEndpoint: process.env.GRAPHQL_API_ENDPOINT || !isNil(arksJsonFile.graphqlApiEndpoint) && isString(arksJsonFile.graphqlApiEndpoint) ? arksJsonFile.graphqlApiEndpoint : ArksDefaultConfig.GRAPHQL_API_ENDPOINT,
             
-            metricsCollectTimeout: !!process.env.METRICS_COLLECT_TIMEOUT ? parseInt(process.env.METRICS_COLLECT_TIMEOUT, 10) :  !isNil(arksJsonFile.metricsCollectTimeout) && isNumber(arksJsonFile.metricsCollectTimeout) ? arksJsonFile.metricsCollectTimeout : arksDefaultConfig.METRICS_COLLECT_TIMEOUT,
-            httpTimeout: !!process.env.HTTP_TIMEOUT ? parseInt(process.env.HTTP_TIMEOUT, 10) : !isNil(arksJsonFile.httpTimeout) && isNumber(arksJsonFile.httpTimeout) ? arksJsonFile.httpTimeout : arksDefaultConfig.HTTP_TIMEOUT,
-            limitWindowsTimeFrameMs: !!process.env.LIMIT_WINDOWS_TIME_FRAME_MS ? parseInt(process.env.LIMIT_WINDOWS_TIME_FRAME_MS, 10) : !isNil(arksJsonFile.limitWindowsTimeFrameMs) && isNumber(arksJsonFile.limitWindowsTimeFrameMs) ? arksJsonFile.limitWindowsTimeFrameMs : arksDefaultConfig.LIMIT_WINDOWS_TIME_FRAME_MS,
-            limitMaxRequestsPerIp: !!process.env.LIMIT_MAX_REQUESTS_PER_IP ? parseInt(process.env.LIMIT_MAX_REQUESTS_PER_IP, 10) : !isNil(arksJsonFile.limitMaxRequestsPerIp) && isNumber(arksJsonFile.limitMaxRequestsPerIp) ? arksJsonFile.limitMaxRequestsPerIp : arksDefaultConfig.LIMIT_MAX_REQUESTS_PER_IP,
+            metricsCollectTimeout: !!process.env.METRICS_COLLECT_TIMEOUT ? parseInt(process.env.METRICS_COLLECT_TIMEOUT, 10) :  !isNil(arksJsonFile.metricsCollectTimeout) && isNumber(arksJsonFile.metricsCollectTimeout) ? arksJsonFile.metricsCollectTimeout : ArksDefaultConfig.METRICS_COLLECT_TIMEOUT,
+            httpTimeout: !!process.env.HTTP_TIMEOUT ? parseInt(process.env.HTTP_TIMEOUT, 10) : !isNil(arksJsonFile.httpTimeout) && isNumber(arksJsonFile.httpTimeout) ? arksJsonFile.httpTimeout : ArksDefaultConfig.HTTP_TIMEOUT,
+            limitWindowsTimeFrameMs: !!process.env.LIMIT_WINDOWS_TIME_FRAME_MS ? parseInt(process.env.LIMIT_WINDOWS_TIME_FRAME_MS, 10) : !isNil(arksJsonFile.limitWindowsTimeFrameMs) && isNumber(arksJsonFile.limitWindowsTimeFrameMs) ? arksJsonFile.limitWindowsTimeFrameMs : ArksDefaultConfig.LIMIT_WINDOWS_TIME_FRAME_MS,
+            limitMaxRequestsPerIp: !!process.env.LIMIT_MAX_REQUESTS_PER_IP ? parseInt(process.env.LIMIT_MAX_REQUESTS_PER_IP, 10) : !isNil(arksJsonFile.limitMaxRequestsPerIp) && isNumber(arksJsonFile.limitMaxRequestsPerIp) ? arksJsonFile.limitMaxRequestsPerIp : ArksDefaultConfig.LIMIT_MAX_REQUESTS_PER_IP,
 
-            sourceDirectoryPath: arksDefaultConfig.SOURCE_DIRECTORY_PATH,
-            appComponentFilename: arksDefaultConfig.APP_COMPONENT_FILENAME,
-            compiledClientSourceDirectoryPath: arksDefaultConfig.COMPILED_CLIENT_SOURCE_DIRECTORY_PATH,
-            compiledServerSourceDirectoryPath: arksDefaultConfig.COMPILED_SERVER_SOURCE_DIRECTORY_PATH,
-            compiledClientBundleFilename: arksDefaultConfig.COMPILED_CLIENT_BUNDLE_FILENAME,
-            compiledAppComponentFilename: arksDefaultConfig.COMPILED_APP_COMPONENT_FILENAME,
-            reactAppClientEntryFilePath: arksDefaultConfig.REACT_APP_CLIENT_ENTRY_FILE_PATH,
-            reactAppClientRootFilePath: arksDefaultConfig.REACT_APP_CLIENT_ROOT_FILE_PATH,
-            reactAppRootNodeId: arksDefaultConfig.REACT_APP_ROOT_NODE_ID,
-            internalGraphQLEndpoint: arksDefaultConfig.INTERNAL_GRAPHQL_ENDPOINT,
+            // Cannot be changed config
+            sourceDirectoryPath: ArksDefaultConfig.SOURCE_DIRECTORY_PATH,
+            publicDirectoryPath: ArksDefaultConfig.PUBLIC_DIRECTORY_PATH,
+            appComponentFilename: ArksDefaultConfig.APP_COMPONENT_FILENAME,
+            compiledClientSourceDirectoryPath: ArksDefaultConfig.COMPILED_CLIENT_SOURCE_DIRECTORY_PATH,
+            compiledServerSourceDirectoryPath: ArksDefaultConfig.COMPILED_SERVER_SOURCE_DIRECTORY_PATH,
+            compiledClientBundleFilename: ArksDefaultConfig.COMPILED_CLIENT_BUNDLE_FILENAME,
+            compiledAppComponentFilename: ArksDefaultConfig.COMPILED_APP_COMPONENT_FILENAME,
+            reactAppClientEntryFilePath: ArksDefaultConfig.REACT_APP_CLIENT_ENTRY_FILE_PATH,
+            reactAppClientRootFilePath: ArksDefaultConfig.REACT_APP_CLIENT_ROOT_FILE_PATH,
+            reactAppRootNodeId: ArksDefaultConfig.REACT_APP_ROOT_NODE_ID,
+            internalGraphQLEndpoint: ArksDefaultConfig.INTERNAL_GRAPHQL_ENDPOINT,
 
             localUrlForTerminal,
         }, isDev, cwd);
