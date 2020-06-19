@@ -435,20 +435,18 @@ export class ArksServer {
                 profiling: !this._isDev,
             });
 
-            if (this._isDev) {
-                compiler.hooks.done.tap('ArksClientWebpackComplierDonePlugin', async (): Promise<void> => {
-                    if (!!onCSRComlilationEnd) {
-                        onCSRComlilationEnd(this.isFirstBuild);
-                    }
+            compiler.hooks.done.tap('ArksClientWebpackComplierDonePlugin', async (): Promise<void> => {
+                if (!!onCSRComlilationEnd) {
+                    onCSRComlilationEnd(this.isFirstBuild);
+                }
 
-                    if (!this.isFirstBuild) {
-                        await this.runServerArksWebpackCompiler();
-                    }
-                    else {
-                        this.isFirstBuild = false;
-                    }
-                });
-            }
+                if (!this.isFirstBuild) {
+                    await this.runServerArksWebpackCompiler();
+                }
+                else {
+                    this.isFirstBuild = false;
+                }
+            });
             
             ArksServerLogger.info(ServerMessage.clientArksWebpackCompilerCreated);
         }
@@ -459,8 +457,7 @@ export class ArksServer {
 
         ArksServerLogger.emptyLine();
 
-        if (compiler !== null && this._isDev) {
-
+        if (compiler !== null) {
             // @ts-ignore
             this.app.use(createArksWebpackDevMiddleware(compiler, {
                 publicPath,
@@ -495,8 +492,10 @@ export class ArksServer {
         this.addStaticDirectories();
         this.addControllers();
 
-        await this.compilesFromAppRootForSSR();
-        await this.compilesFromAppRootForCSR(onCSRComlilationEnd);
+        if (this._isDev) {
+            await this.compilesFromAppRootForSSR();
+            await this.compilesFromAppRootForCSR(onCSRComlilationEnd);
+        }
 
         this.app.use('*', async (req: express.Request, res: express.Response): Promise<void> => {
             try {
