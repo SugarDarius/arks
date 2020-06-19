@@ -25,6 +25,11 @@ async function Arks(): Promise<void> {
         .option('-p, --protocol <string>', 'Specific protocol to use [http | https]', 'http')
         .action(Commands.DevCommand);
 
+    program
+        .command('build')
+        .description('Build an Arks project as production')
+        .action(Commands.BuildCommand);
+
     if (!process.argv.slice(2).length) {
         program.outputHelp();
         process.exit(0);

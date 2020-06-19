@@ -7,13 +7,25 @@
 </p>
 
 <p align="center">
-    This the offical repository of the Arks framework.
+  This the offical repository of the Arks framework.
+</p>
+
+<p align="center">
+  <a href="https://twitter.com/azeldvin">  
+    <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/azeldvin?style=social">
+  </a>
 </p>
 
 **!! This is for now an experimental project !!**
 
 ## What is Arks?
-An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL.
+Arks is an **opiniated** open source (very important term) [React](https://reactjs.org/) framework for creating, developing, building and shipping isomorphics apps built on top of [React Router](https://reacttraining.com/react-router/web/guides/quick-start) and [Apollo GraphQL](https://www.apollographql.com/).<br />
+In a defined project structure the CLI will mount an [Express](http://expressjs.com/) server for you and serves a server side rendered React App.<br />
+Of course because this framework is an opiniated one it will impose you some constraints to respect.<br />
+But don't worry this project is open source it will evolve with time.<br />
+The project is divided in several packages and the server comes with some features such as monitoring as it will explain below.
+
+Arks is made to be driven by the community so please feel free to send us your feedback, ideas and PRs!
 
 ## Table of Contents
 
@@ -40,11 +52,17 @@ npm install -g @arks/cli
 ```
 
 ## Arks CLI
-The CLI of Arks is based on NPM.
+The CLI of Arks is based on NPM.<br />
+You will find somme commands like **create**, **dev**, **build**, **start** and **package**.
 
-Start a project as development
+Start a project as development:
 ```bash
 arks dev -p 8080
+```
+
+Build the project as production:
+```bash
+arks build
 ```
 
 ## Arks availables packages
@@ -79,6 +97,7 @@ Here is the list of known bugs of Arks :
 * [React](https://reactjs.org/)
 * [React Router](https://reacttraining.com/react-router/web/guides/quick-start)
 * [Apollo GraphQL](https://www.apollographql.com/)
+* [Express](http://expressjs.com/)
 * [NodeJS](https://nodejs.org/en/)
 * [Gulp](https://gulpjs.com/)
 
