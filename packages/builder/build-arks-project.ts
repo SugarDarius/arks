@@ -4,7 +4,7 @@ import * as ArksDefaultConfig from '@arks/config';
 
 import { createArksProjectBuilder } from './create-akrs-project-builder';
 
-export async function buildArksProject(): Promise<void> {
+export async function buildArksProject(useSourceMap: boolean): Promise<void> {
     const cwd: string = process.cwd();
     process.env.NODE_ENV = 'production';
 
@@ -13,6 +13,7 @@ export async function buildArksProject(): Promise<void> {
         ArksServerLogger.emptyLine();
 
         const arksProjectBuilder = createArksProjectBuilder({
+            useSourceMap,
             sourceDirectoryPath: ArksDefaultConfig.SOURCE_DIRECTORY_PATH,
             appComponentFilename: ArksDefaultConfig.APP_COMPONENT_FILENAME,
             compiledClientSourceDirectoryPath: ArksDefaultConfig.COMPILED_CLIENT_SOURCE_DIRECTORY_PATH,

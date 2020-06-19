@@ -12,6 +12,8 @@ import * as fs from 'fs';
 import ora from 'ora';
 
 export interface ArksProjectBuilderOptions {
+    useSourceMap: boolean;
+
     sourceDirectoryPath: string;
     appComponentFilename: string;
     compiledClientSourceDirectoryPath: string;
@@ -36,6 +38,7 @@ export class ArksProjectBuilder {
             appComponentFilename,
             compiledAppComponentFilename,
             compiledServerSourceDirectoryPath,
+            useSourceMap,
         } = this.options;
 
         let compiler: ArksWebpackCompiler | null = null;
@@ -53,6 +56,7 @@ export class ArksProjectBuilder {
                 noHmr: true,
                 profiling: true,
                 isProd: true,
+                useSourceMap,
             });
         }
         catch (err) {
@@ -104,6 +108,7 @@ export class ArksProjectBuilder {
             reactAppClientEntryFilePath,
             sourceDirectoryPath,
             compiledClientBundleFilename,
+            useSourceMap,
         } = this.options;
 
         let compiler: ArksWebpackCompiler | null = null;
@@ -122,6 +127,7 @@ export class ArksProjectBuilder {
                 noHmr: true,
                 profiling: true,
                 isProd: true,
+                useSourceMap,
             });
 
             ArksServerLogger.info(BuilderMessage.clientArksWebpackCompilerCreated);

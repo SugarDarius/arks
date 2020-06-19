@@ -86,6 +86,7 @@ function Arks() {
                     commander_1.program
                         .command('build')
                         .description('Build an Arks project as production')
+                        .option('--use-source-map', 'Use source map for build', false)
                         .action(Commands.BuildCommand);
                     if (!process.argv.slice(2).length) {
                         commander_1.program.outputHelp();

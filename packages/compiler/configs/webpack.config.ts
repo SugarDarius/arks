@@ -40,8 +40,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
 
     const isDev: boolean = !isProd;
     const isProdProfiling: boolean = !!isProd && !!profiling;
-
-    const shouldUseSourceMap: boolean = !!useSourceMap;
+    const shouldUseSourceMap: boolean = !!useSourceMap && !!isProd;
 
     return {
         target: 'web',

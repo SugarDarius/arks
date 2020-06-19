@@ -1,1 +1,1 @@
-export declare function BuildCommand(): Promise<void>;
+export declare function BuildCommand(cmd: any): Promise<void>;

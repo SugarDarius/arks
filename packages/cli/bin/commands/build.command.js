@@ -38,11 +38,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BuildCommand = void 0;
 var builder_1 = require("@arks/builder");
-function BuildCommand() {
+function BuildCommand(cmd) {
     return __awaiter(this, void 0, void 0, function () {
+        var useSourceMap;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, builder_1.buildArksProject()];
+                case 0:
+                    useSourceMap = cmd.useSourceMap;
+                    return [4 /*yield*/, builder_1.buildArksProject(useSourceMap)];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
