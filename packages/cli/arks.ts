@@ -18,6 +18,11 @@ async function Arks(): Promise<void> {
         .helpOption('-h, --help', 'read more information');
     
     program
+        .command('create <name>')
+        .description('Create from schematics and Arks project')
+        .action(Commands.CreateCommand);
+    
+    program
         .command('dev')
         .description('Start an Arks project as development')
         .option('-p, --port <number>', 'Specific port to use', '8080')

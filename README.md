@@ -55,6 +55,11 @@ npm install -g @arks/cli
 The CLI of Arks is based on NPM and with [Commander](https://github.com/tj/commander.js).<br />
 You will find some commands like **create**, **dev**, **build**, **start** and **package**.
 
+Create a project
+```bash
+arks create <name>
+```
+
 Start a project as development:
 ```bash
 arks dev -p 8080
