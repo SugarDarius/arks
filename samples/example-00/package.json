@@ -2,7 +2,9 @@
     "name": "arks-example-00",
     "version": "1.0.0",
     "scripts": {
-        "develop": "arks dev -p 8080"
+        "develop": "arks dev -p 8080",
+        "build": "arks build",
+        "start": "arks start"
     },
     "devDependencies": {
         "@types/node": "14.0.5",
