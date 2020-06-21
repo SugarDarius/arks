@@ -1,6 +1,6 @@
 import { ServerMessage } from '@arks/common';
 import { ArksServerLogger } from '@arks/logger';
-import { or, getNodeEnv } from '@arks/utils';
+import { or } from '@arks/utils';
 import { 
     ArksWebpackCompiler,
     createArksWebpackCompiler,
@@ -158,7 +158,6 @@ export class ArksServer {
     }
 
     private addMiddlewares(): void {
-        const nodeEnv = getNodeEnv();
         const {
             noHelmet,
             noCors,
@@ -227,7 +226,7 @@ export class ArksServer {
 
          // @ts-ignore
          this.app.use(morgan((tokens: morgan.TokenIndexer, req: express.Request, res: express.Response): string => {
-            return ArksServerLogger.infoToString(`${tokens.method(req, res)} ${tokens.status(req, res)} ${tokens.url(req, res)} ${tokens['response-time'](req, res)}ms as ${nodeEnv}!`);
+            return ArksServerLogger.infoToString(`${tokens.method(req, res)} ${tokens.status(req, res)} ${tokens.url(req, res)} ${tokens['response-time'](req, res)}ms!`);
         }));
     }
 

@@ -12,3 +12,4 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./dev.command"), exports);
 __exportStar(require("./build.command"), exports);
+__exportStar(require("./start.command"), exports);

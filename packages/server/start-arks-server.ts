@@ -25,6 +25,7 @@ export type StartArksServerOptions = {
     port?: string;
     host?: string;
     protocol?: string;
+    openWebrowser?: boolean;
 };
 
 export async function startArksServer(isDev: boolean, options: StartArksServerOptions) {
@@ -170,7 +171,7 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
 
         server.listen(PORT, HOST);
 
-        server.on('listening', (): void => {
+        server.on('listening', async (): Promise<void> => {
             ArksServerLogger.info(ServerMessage.listening);
             ArksServerLogger.emptyLine();
 
@@ -182,6 +183,13 @@ export async function startArksServer(isDev: boolean, options: StartArksServerOp
                 ArksServerLogger.info(localUrlForTerminal);
             }
             ArksServerLogger.emptyLine();
+
+            if (!isDev && options.openWebrowser) {
+                ArksServerLogger.info(`${ServerMessage.openning} at ${localUrlForBrowser}!`);
+                ArksServerLogger.emptyLine();
+
+                await open(localUrlForBrowser);
+            }
         });
 
         server.on('error', (err: Error): void => {

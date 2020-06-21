@@ -88,6 +88,14 @@ function Arks() {
                         .description('Build an Arks project as production')
                         .option('--use-source-map', 'Use source map for build', false)
                         .action(Commands.BuildCommand);
+                    commander_1.program
+                        .command('start')
+                        .description('Start an Arks project as production')
+                        .option('-p, --port <number>', 'Specific port to use', '8080')
+                        .option('-s, --host <string>', 'Specific host to use', '0.0.0.0')
+                        .option('-p, --protocol <string>', 'Specific protocol to use [http | https]', 'http')
+                        .option('-o, --open', 'Open web browser for testing production build on a local machine', false)
+                        .action(Commands.StartCommand);
                     if (!process.argv.slice(2).length) {
                         commander_1.program.outputHelp();
                         process.exit(0);

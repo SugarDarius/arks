@@ -1,8 +1,3 @@
-
-import { getNodeEnv } from '@arks/utils';
-
-const nodeEnv: string = getNodeEnv();
-
 export type TSeverMessage = {
     configurationOptionsPriorityReminder: string;
 
@@ -92,13 +87,13 @@ export const ServerMessage: TSeverMessage = {
     usingArksJsonFile: `arks.json file detected. Using defined options in it in the Arks configuration priority order`,
     noArksJsonFile: 'No arks.json file detected, falling back to @arks/server pre-defined configuration options',
 
-    initializing: `Initializing server as ${nodeEnv}!`,
-    initialized: `Server initialized as ${nodeEnv}!`,
-    starting: `Starting server as ${nodeEnv}!`,
-    startingError: `Error while starting server as ${nodeEnv}`,
-    listening: `Server listening as ${nodeEnv}!`,
-    error: `Server error as ${nodeEnv}`,
-    stopping: `Stopping server as ${nodeEnv}!`,
+    initializing: `Initializing server!`,
+    initialized: `Server initialized!`,
+    starting: `Starting server!`,
+    startingError: `Error while starting server`,
+    listening: `Server listening!`,
+    error: `Server error`,
+    stopping: `Stopping server!`,
     stopped: `Server stopped!`,
     openning: `Opening React Application in the default browser`,
 
