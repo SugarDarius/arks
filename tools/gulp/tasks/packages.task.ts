@@ -70,6 +70,15 @@ projects.set('builder', createProject(path.resolve(
     `${source}/builder/tsconfig.json`
 )));
 
+projects.set('schematics', createProject(path.resolve(
+    __dirname,
+    `${source}/schematics/tsconfig.json`
+)));
+
+projects.set('creator', createProject(path.resolve(
+    __dirname,
+    `${source}/creator/tsconfig.json`
+)));
 
 const packages: string[] = [ ...Array.from(projects.keys()) ];
 

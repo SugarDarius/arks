@@ -6,7 +6,7 @@
         "target": "es5",
         "esModuleInterop": true,
         "moduleResolution": "node",
-        "outDir": "./dist",
+        "outDir": "./",
         "declaration": true,
         "lib":  ["dom"],
         "jsx": "react"

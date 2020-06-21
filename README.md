@@ -81,6 +81,7 @@ Here is the list of all availbles and packages :
 | Name                            | Description                                                 | Implemented    |
 | ------------------------------- | ----------------------------------------------------------- | -------------: |
 | cli                             | Arks command line interface                                 | Yes            |
+| schematics                      | Arks project schematics                                     | Yes            |
 | utils                           | Some utils                                                  | Yes            |
 | misc                            | Misc things                                                 | Yes            |
 | common                          | Some commons used in the other pakcages                     | Yes            |

@@ -1,12 +1,9 @@
 {
-    "name": "@arks/cli",
+    "name": "@arks/creator",
     "version": "1.0.0",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
-    "main": "./bin/arks.js",
-    "types": "./bin/arks.d.ts",
-    "bin": {
-        "arks": "./bin/arks.js"
-    },
+    "main": "./index.js",
+    "types": "./index.d.ts",
     "homepage": "https://github.com/SugarDarius/arks",
     "bugs": {
         "url": "https://github.com/SugarDarius/arks/issues"
@@ -25,25 +22,16 @@
         "npm": ">=6.13.0",
         "yarn": "yarn is not supported - please use npm"
     },
-    "scripts": {
-        "develop:cli": "npm-run-all --serial develop:cli:clean develop:cli:build develop:cli:link",
-        "develop:cli:clean": "shx rm -rf ./bin",
-        "develop:cli:build": "tsc -p ./tsconfig.json",
-        "develop:cli:link": "npm link @arks/cli"
-    },
     "devDependencies": {
-        "@types/chalk": "2.2.0",
         "@types/node": "14.0.5",
-        "npm-run-all": "4.1.5",
         "typescript": "3.9.3"
     },
     "dependencies": {
-        "@arks/misc": "1.0.0",
-        "@arks/server": "1.0.0",
-        "@arks/builder": "1.0.0",
-        "@arks/creator": "1.0.0",
-        "chalk": "4.0.0",
-        "commander": "5.1.0",
-        "shx": "0.3.2"
+        "@angular-devkit/schematics-cli": "0.901.9",
+        "@arks/common": "1.0.0",
+        "@arks/utils": "1.0.0",
+        "@arks/logger": "1.0.0",
+        "@arks/schematics": "1.0.0",
+        "ora": "4.0.4"
     }
 }

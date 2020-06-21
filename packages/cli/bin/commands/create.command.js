@@ -37,11 +37,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateCommand = void 0;
+var creator_1 = require("@arks/creator");
 function CreateCommand(name) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            console.log('name', name);
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, creator_1.createArksProject(name)];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
         });
     });
 }
