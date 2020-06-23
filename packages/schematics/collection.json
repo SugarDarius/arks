@@ -1,9 +1,0 @@
-{
-    "$schema": "./@angular-devkit/schematics/collection-schema.json",
-    "schematics": {
-        "application": {
-            "description": "Create an Arks projecty",
-            "factory": "./factories/application.factory#main"
-        }
-    }
-}

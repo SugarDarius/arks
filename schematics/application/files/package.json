@@ -1,6 +1,6 @@
 {
-    "name": "arks-example-00",
-    "version": "1.0.0",
+    "name": "<%= name %>",
+    "version": "<%= version %>",
     "license": "UNLICENSED",
     "scripts": {
         "develop": "arks dev -p 8080",

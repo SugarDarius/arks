@@ -1,83 +1,82 @@
 import * as path from 'path';
 
-import { series, task, dest } from 'gulp';
+import { series, task, dest, src } from 'gulp';
 import { createProject, Project } from 'gulp-typescript';
 import * as sourcemaps from 'gulp-sourcemaps';
 import logger from 'fancy-log';
 
-import { source } from '../configs/source.config';
+import { 
+    packagesSource,
+    schematicsSource,
+} from '../configs/sources.config';
+
 import { getPackagesList } from '../utils/files.util';
 
 const distArgNameIndex: number = process.argv.indexOf('--dist');
-const distDestPath: string = distArgNameIndex < 0 ? source : process.argv[distArgNameIndex + 1];
+const distDestPath: string = distArgNameIndex < 0 ? packagesSource : process.argv[distArgNameIndex + 1];
 
-const packagesList = getPackagesList(path.resolve(__dirname, source));
+const packagesList = getPackagesList(path.resolve(__dirname, packagesSource));
 
 const projects: Map<string, Project> = new Map<string, Project>();
 
 projects.set('misc', createProject(path.resolve(
     __dirname,
-    `${source}/misc/tsconfig.json`
+    `${packagesSource}/misc/tsconfig.json`
 )));
 
 projects.set('utils', createProject(path.resolve(
     __dirname,
-    `${source}/utils/tsconfig.json`
+    `${packagesSource}/utils/tsconfig.json`
 )));
 
 projects.set('common', createProject(path.resolve(
     __dirname,
-    `${source}/common/tsconfig.json`
+    `${packagesSource}/common/tsconfig.json`
 )));
 
 projects.set('logger', createProject(path.resolve(
     __dirname,
-    `${source}/logger/tsconfig.json`
+    `${packagesSource}/logger/tsconfig.json`
 )));
 
 projects.set('monitors', createProject(path.resolve(
     __dirname,
-    `${source}/monitors/tsconfig.json`
+    `${packagesSource}/monitors/tsconfig.json`
 )));
 
 projects.set('compiler', createProject(path.resolve(
     __dirname,
-    `${source}/compiler/tsconfig.json`
+    `${packagesSource}/compiler/tsconfig.json`
 )));
 
 projects.set('config', createProject(path.resolve(
     __dirname,
-    `${source}/config/tsconfig.json`
+    `${packagesSource}/config/tsconfig.json`
 )));
 
 projects.set('react', createProject(path.resolve(
     __dirname,
-    `${source}/react/tsconfig.json`
+    `${packagesSource}/react/tsconfig.json`
 )));
 
 projects.set('client', createProject(path.resolve(
     __dirname,
-    `${source}/client/tsconfig.json`
+    `${packagesSource}/client/tsconfig.json`
 )));
 
 projects.set('server', createProject(path.resolve(
     __dirname,
-    `${source}/server/tsconfig.json`
+    `${packagesSource}/server/tsconfig.json`
 )));
 
 projects.set('builder', createProject(path.resolve(
     __dirname,
-    `${source}/builder/tsconfig.json`
-)));
-
-projects.set('schematics', createProject(path.resolve(
-    __dirname,
-    `${source}/schematics/tsconfig.json`
+    `${packagesSource}/builder/tsconfig.json`
 )));
 
 projects.set('creator', createProject(path.resolve(
     __dirname,
-    `${source}/creator/tsconfig.json`
+    `${packagesSource}/creator/tsconfig.json`
 )));
 
 const packages: string[] = [ ...Array.from(projects.keys()) ];
@@ -104,10 +103,49 @@ function buildPackageAsDevelopment(name: string): any {
         .pipe(dest(`${distDestPath}/${name}`));
 }
 
+function buildSchematicsIntoBinDirectoryOfCreatorPackage(): any {
+    const project = createProject(path.resolve(
+        __dirname,
+        `${schematicsSource}/tsconfig.json`
+    ));
+
+    return project
+        .src()
+        .pipe(sourcemaps.init())
+        .pipe(project())
+        .pipe(sourcemaps.write('.', {}))
+        .pipe(dest(`${distDestPath}/creator/.bin/schematics`));
+}
+
+function copyCollectionJsonFileForSchematics(): any {
+    return src(`${schematicsSource}/collection.json`).pipe(dest(`${distDestPath}/creator/.bin/schematics`));
+}
+
+function copyApplicationTemplateFilesForSchematics(): any {
+    return src(`${schematicsSource}/application/files/**/*`).pipe(dest(`${distDestPath}/creator/.bin/schematics/application/files`));
+}
+
+function copyApplicationSchemaJsonFileForSchematics(): any {
+    return src(`${schematicsSource}/application/schema.json`).pipe(dest(`${distDestPath}/creator/.bin/schematics/application`));
+}
+
 packages.forEach((name: string): void => {
-    task(`${name}:dev`, (): any => buildPackageAsDevelopment(name));
+    task(`${name}:build:dev`, (): any => buildPackageAsDevelopment(name));
 });
 
-task('build:dev', series(packages.map((name: string): string => {
-    return `${name}:dev`;
-})));
+task('schematics:build:dev', (): any => buildSchematicsIntoBinDirectoryOfCreatorPackage());
+task('schematics:copy:collection:dev', (): any => copyCollectionJsonFileForSchematics());
+task('schematics:copy:application:template:dev', (): any => copyApplicationTemplateFilesForSchematics());
+task('schematics:copy:application:schema:dev', (): any => copyApplicationSchemaJsonFileForSchematics());
+
+task('s')
+
+task('build:dev', series([
+    ...packages.map((name: string): string => {
+        return `${name}:build:dev`;
+    }),
+    'schematics:build:dev',
+    'schematics:copy:collection:dev',
+    'schematics:copy:application:template:dev',
+    'schematics:copy:application:schema:dev',
+]));

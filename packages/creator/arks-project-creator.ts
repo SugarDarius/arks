@@ -1,5 +1,6 @@
 import { ArksServerLogger } from '@arks/logger';
 import { CreatorMessage } from '@arks/common';
+import { runShellCommand } from '@arks/utils';
 
 import * as path from 'path';
 import * as fs from 'fs';
@@ -13,6 +14,8 @@ export interface ArksProjectCreatorOptions {
 export class ArksProjectCreator {
     private options: ArksProjectCreatorOptions;
     private _cwd: string;
+
+    private npmGlobalModulesRootPath: string | null = null;
 
     constructor(options: ArksProjectCreatorOptions, cwd: string) {
         this.options = options;
@@ -48,6 +51,31 @@ export class ArksProjectCreator {
         }
     }
 
+    private async createFilesWithSchematics(): Promise<void> {
+        const { name } = this.options;
+
+        await runShellCommand({
+            command: 'schematics',
+            args: [
+                `${path.resolve(__dirname, './.bin/schematics/collection.json')}:application`, 
+                `"${name}"`,
+            ],
+            cwd: this._cwd,
+            logger: {
+                info: (message: string) => {
+                    ArksServerLogger.info(message);
+                },
+                error: (message: string) => {
+                    ArksServerLogger.error(message);
+                }
+            }
+        });
+    }
+
+    private async runNpmInstallCommand(): Promise<void> {
+
+    }
+
     async runCreator(): Promise<void> {
         const { name } = this.options;
 
@@ -59,6 +87,8 @@ export class ArksProjectCreator {
             const startBuildTime = process.hrtime();
 
             await this.createProjectDirectory();
+            await this.createFilesWithSchematics();
+            await this.runNpmInstallCommand();
 
             const elapsedBuildTime = process.hrtime(startBuildTime);
 

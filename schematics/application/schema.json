@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "$id": "ArksApplicationSchematics",
+    "title": "Arks application Options Schema",
+    "type": "object",
+    "description": "Create an Akrs application",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "The name of the Arks application",
+            "$default": {
+                "$source": "argv",
+                "index": 0
+            },
+            "x-prompt": "What name would you like to use for the new project?"
+        },
+        "version": {
+            "type": "string",
+            "description": "Arks application version",
+            "default": "1.0.0"
+        }
+    },
+    "required": [
+        "name"
+    ]
+}
