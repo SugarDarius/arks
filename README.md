@@ -57,7 +57,7 @@ You will find some commands like **create**, **dev**, **build**, **start** and *
 
 Create a project
 ```bash
-arks create <name>
+arks create project <name>
 ```
 
 Start a project as development:
