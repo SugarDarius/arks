@@ -32,5 +32,5 @@ export function main(options: ApplicationOptions): Rule {
         ]);
 
         return mergeWith(parametrizedTemplates)(tree, _context);
-    }
+    };
 }

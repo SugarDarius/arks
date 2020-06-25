@@ -115,7 +115,7 @@ function copyCollectionJsonFileForSchematics(): any {
 }
 
 function copyApplicationTemplateFilesForSchematics(): any {
-    return src(`${packagesSource}/schematics/application/files/**/*`).pipe(dest(`${distDestPath}/schematics/application/files`));
+    return src(`${packagesSource}/schematics/application/files/**/*`, { dot: true }).pipe(dest(`${distDestPath}/schematics/application/files`));
 }
 
 function copyApplicationSchemaJsonFileForSchematics(): any {
