@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-  <img width="400" align="center" src="./doc/img/arks-logo.png" />
+  <img width="400" align="center" src="./medias/img/arks-logo.png" />
 </p>
 
 <p align="center">
@@ -117,3 +117,5 @@ Here is the list of known bugs of Arks :
 ## Authors
 
 * **Aurélien Dupays Dexemple**
+
+This project is under the [MIT License](./LICENSE).

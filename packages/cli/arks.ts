@@ -16,11 +16,13 @@ async function Arks(): Promise<void> {
         .name('arks')
         .version(pkg.version, '-v, --version')
         .helpOption('-h, --help', 'read more information');
+
+    const create = program.command('create');
     
-    program
-        .command('create <name>')
-        .description('Create from schematics and Arks project')
-        .action(Commands.CreateCommand);
+    create
+        .command('project <name>')
+        .description('Create a new Arks project from schematics')
+        .action(Commands.CreateCommands.ProjectCreateCommand);
     
     program
         .command('dev')

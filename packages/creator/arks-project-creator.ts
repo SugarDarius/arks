@@ -1,6 +1,9 @@
 import { ArksServerLogger } from '@arks/logger';
 import { CreatorMessage } from '@arks/common';
-import { runShellCommand } from '@arks/utils';
+import {
+    findClosestBinPath,
+    runShellCommand, 
+} from '@arks/utils';
 
 import * as path from 'path';
 import * as fs from 'fs';
@@ -14,8 +17,6 @@ export interface ArksProjectCreatorOptions {
 export class ArksProjectCreator {
     private options: ArksProjectCreatorOptions;
     private _cwd: string;
-
-    private npmGlobalModulesRootPath: string | null = null;
 
     constructor(options: ArksProjectCreatorOptions, cwd: string) {
         this.options = options;
@@ -51,29 +52,44 @@ export class ArksProjectCreator {
         }
     }
 
-    private async createFilesWithSchematics(): Promise<void> {
+    private async createFilesWithSchematics(): Promise<boolean> {
         const { name } = this.options;
+        const spinner = this.createSpinner(CreatorMessage.lookingForSchematicsBinaries);
 
-        await runShellCommand({
-            command: 'schematics',
-            args: [
-                `${path.resolve(__dirname, './.bin/schematics/collection.json')}:application`, 
-                `"${name}"`,
-            ],
-            cwd: this._cwd,
-            logger: {
-                info: (message: string) => {
-                    ArksServerLogger.info(message);
-                },
-                error: (message: string) => {
-                    ArksServerLogger.error(message);
+        spinner.start();
+        const schematicsBinaryPath = findClosestBinPath('schematics');
+
+        if (schematicsBinaryPath !== null) {
+            spinner.stop();
+            ArksServerLogger.info(CreatorMessage.schematicsBinariesFound);
+
+            ArksServerLogger.info(CreatorMessage.executingSchematicsCommand);
+            const execState = await runShellCommand({
+                command: schematicsBinaryPath,
+                args: [
+                    `@arks/schematics:application`, 
+                    `--name="${name}"`,
+                ],
+                cwd: this._cwd,
+                logger: {
+                    info: (message: string) => {
+                        ArksServerLogger.info(message);
+                    },
+                    error: (message: string) => {
+                        ArksServerLogger.error(message);
+                    }
                 }
-            }
-        });
-    }
+            });
+            ArksServerLogger.info(CreatorMessage.schematicsCommandExecuted);
 
-    private async runNpmInstallCommand(): Promise<void> {
+            return execState.success;
+        }
+        else {
+            spinner.stop();
+            ArksServerLogger.info(CreatorMessage.schematicsBinariesNotFound);
+        }
 
+        return false;
     }
 
     async runCreator(): Promise<void> {
@@ -87,8 +103,7 @@ export class ArksProjectCreator {
             const startBuildTime = process.hrtime();
 
             await this.createProjectDirectory();
-            await this.createFilesWithSchematics();
-            await this.runNpmInstallCommand();
+            const isFilesCreated = await this.createFilesWithSchematics();
 
             const elapsedBuildTime = process.hrtime(startBuildTime);
 

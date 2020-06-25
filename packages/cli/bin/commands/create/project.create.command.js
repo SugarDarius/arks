@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateCommand = void 0;
+exports.ProjectCreateCommand = void 0;
 var creator_1 = require("@arks/creator");
-function CreateCommand(name) {
+function ProjectCreateCommand(name) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -50,4 +50,4 @@ function CreateCommand(name) {
         });
     });
 }
-exports.CreateCommand = CreateCommand;
+exports.ProjectCreateCommand = ProjectCreateCommand;

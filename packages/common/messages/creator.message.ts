@@ -10,10 +10,17 @@ export type TCreatorMessage = {
     creatingProjectDirectory: string;
     projectDirectoryCreated: string;
     projectDirectoryCreationError: string;
+
+    lookingForSchematicsBinaries: string;
+    schematicsBinariesFound: string;
+    schematicsBinariesNotFound: string;
+
+    executingSchematicsCommand: string;
+    schematicsCommandExecuted: string;
 };
 
 export const CreatorMessage: TCreatorMessage = {
-    startCreatingProject: `Starting creating project!`,
+    startCreatingProject: `Starting creating project...`,
     projectCreated: `Project created!`,
     projectCreationError: `Error while creating project!`,
     projectCreationStopped: `Project creation is stopped!`,
@@ -28,4 +35,11 @@ export const CreatorMessage: TCreatorMessage = {
     creatingProjectDirectory: `Creating project directory!`,
     projectDirectoryCreated: `Project directory created!`,
     projectDirectoryCreationError: `Error while creating project directory!`,
+
+    lookingForSchematicsBinaries: `Looking for schematics binaries...`,
+    schematicsBinariesFound: `Schematics binaries found!`,
+    schematicsBinariesNotFound: `Schematics binaries not found!`,
+
+    executingSchematicsCommand: `Executing schematics command...`,
+    schematicsCommandExecuted: `Schematics command executed!`,
 };

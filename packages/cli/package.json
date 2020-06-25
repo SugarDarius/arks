@@ -4,10 +4,13 @@
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./bin/arks.js",
     "types": "./bin/arks.d.ts",
+    "publishConfig": {
+        "access": "public"
+    },
     "bin": {
         "arks": "./bin/arks.js"
     },
-    "homepage": "https://github.com/SugarDarius/arks",
+    "homepage": "https://github.com/SugarDarius/arks#readme",
     "bugs": {
         "url": "https://github.com/SugarDarius/arks/issues"
     },

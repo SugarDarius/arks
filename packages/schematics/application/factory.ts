@@ -10,8 +10,6 @@ import {
 } from '@angular-devkit/schematics';
 import { strings } from '@angular-devkit/core';
 
-import * as path from 'path';
-
 import { DEFAULT_VERSION } from '../defaults';
 
 export interface ApplicationOptions {
@@ -30,7 +28,7 @@ export function main(options: ApplicationOptions): Rule {
                 }),
                 ...strings,
             }),
-            move(path.resolve(process.cwd(), `./${options.name}`)),
+            move(options.name),
         ]);
 
         return mergeWith(parametrizedTemplates)(tree, _context);

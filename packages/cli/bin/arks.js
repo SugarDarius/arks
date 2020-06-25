@@ -65,7 +65,7 @@ var chalk_1 = __importDefault(require("chalk"));
 var Commands = __importStar(require("./commands"));
 function Arks() {
     return __awaiter(this, void 0, void 0, function () {
-        var pkg;
+        var pkg, create;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -76,10 +76,11 @@ function Arks() {
                         .name('arks')
                         .version(pkg.version, '-v, --version')
                         .helpOption('-h, --help', 'read more information');
-                    commander_1.program
-                        .command('create <name>')
-                        .description('Create from schematics and Arks project')
-                        .action(Commands.CreateCommand);
+                    create = commander_1.program.command('create');
+                    create
+                        .command('project <name>')
+                        .description('Create a new Arks project from schematics')
+                        .action(Commands.CreateCommands.ProjectCreateCommand);
                     commander_1.program
                         .command('dev')
                         .description('Start an Arks project as development')

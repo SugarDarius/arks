@@ -1,5 +1,5 @@
 {
-    "name": "@arks/client",
+    "name": "@arks/schematics",
     "version": "1.0.0",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
@@ -7,6 +7,7 @@
     "publishConfig": {
         "access": "public"
     },
+    "schematics": "./collection.json",
     "homepage": "https://github.com/SugarDarius/arks#readme",
     "bugs": {
         "url": "https://github.com/SugarDarius/arks/issues"
@@ -27,22 +28,10 @@
     },
     "devDependencies": {
         "@types/node": "14.0.5",
-        "@types/react": "16.9.36",
-        "@types/react-dom": "16.9.8",
-        "@types/react-router-dom": "5.1.5",
         "typescript": "3.9.3"
     },
     "dependencies": {
-        "@apollo/react-common": "3.1.4",
-        "@apollo/react-ssr": "3.1.5",
-        "@arks/common": "1.0.0",
-        "@arks/logger": "1.0.0",
-        "apollo-cache-inmemory": "1.6.6",
-        "apollo-client": "2.6.10",
-        "apollo-env": "0.6.5",
-        "apollo-link-http": "1.5.17",
-        "react": "16.13.1",
-        "react-dom": "16.13.1",
-        "react-router-dom": "5.2.0"
+        "@angular-devkit/core": "9.1.9",
+        "@angular-devkit/schematics": "9.1.9"
     }
 }
