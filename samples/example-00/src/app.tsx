@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import { 
     Home,
     Help,
+    NotFound,
 } from './pages';
 
 export default function App(): React.ReactElement {
@@ -14,6 +15,9 @@ export default function App(): React.ReactElement {
             </Route>
             <Route path='/help'>
                 <Help />
+            </Route>
+            <Route path='*'>
+                <NotFound />
             </Route>
         </Switch>
     );
