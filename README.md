@@ -53,7 +53,7 @@ npm install -g @arks/cli
 
 ## Arks CLI
 The CLI of Arks is based on NPM and with [Commander](https://github.com/tj/commander.js).<br />
-You will find some commands like **create**, **dev**, **build**, **start** and **package**.
+You will find some commands like **create**, **dev**, **build** and **start**.
 
 Create a project
 ```bash
@@ -114,6 +114,8 @@ Here is the list of known bugs of Arks :
 * [Express](http://expressjs.com/)
 * [NodeJS](https://nodejs.org/en/)
 * [Commander](https://github.com/tj/commander.js)
+* [Angular DevKit](https://github.com/angular/angular-cli/tree/master/packages/angular_devkit)
+* [Angular DevKit Schematics](https://github.com/angular/angular-cli/tree/master/packages/angular_devkit/schematics)
 * [Gulp](https://gulpjs.com/)
 
 ## Authors
