@@ -1,1 +1,9 @@
 node_modules/
+
+**/*.ts
+*.ts
+
+!**/*.d.ts
+!*.d.ts
+
+tsconfig.json
