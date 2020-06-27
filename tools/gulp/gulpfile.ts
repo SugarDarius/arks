@@ -1,2 +1,2 @@
 
-import './tasks/packages.task';
+import './tasks/packages.build.dev.task';
