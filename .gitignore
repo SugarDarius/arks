@@ -1,1 +1,7 @@
 node_modules/
+
+packages/**/*.d.ts
+packages/**/*.js
+
+.DS_Store
+npm-debug.log
