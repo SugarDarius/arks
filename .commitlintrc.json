@@ -18,6 +18,7 @@
             2,
             "always",
             [
+                "project",
                 "arch",
                 "build",
                 "chore",
