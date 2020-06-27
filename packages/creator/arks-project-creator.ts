@@ -130,7 +130,7 @@ export class ArksProjectCreator {
         else {
             const startBuildTime = process.hrtime();
 
-            sequentialTaskRunner(
+            await sequentialTaskRunner(
                 [
                     {
                         action: async (): Promise<boolean> => {
@@ -141,6 +141,20 @@ export class ArksProjectCreator {
                         action: async (): Promise<boolean> => {
                             return this.createFilesWithSchematics();
                         },
+                    },
+                    {
+                        action: async (): Promise<boolean> => {
+                            return this.runNpmInstall();
+                        },
+                        onStart: () => {
+                            ArksServerLogger.info(CreatorMessage.executingNpmInstallCommand);
+                        },
+                        onSuccess: () => {
+                            ArksServerLogger.info(CreatorMessage.npmInstallCommandExecuted);
+                        },
+                        onFail: () => {
+                            ArksServerLogger.info(CreatorMessage.npmInstallCommandError);
+                        }
                     }
                 ],
                 (): void => {

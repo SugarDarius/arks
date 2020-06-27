@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "strict": true,
+        "module": "commonjs",
+        "target": "es5",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "outDir": "./build",
+        "declaration": false,
+        "jsx": "react",
+        "lib": ["esnext", "DOM"],
+    },
+    "include": [
+        "./src/**/*",
+        ".arks/client/**/*",
+        "./globals.d.ts"
+    ],
+    "exclude": [ "node_modules" ],
+}

@@ -12,11 +12,7 @@ export async function sequentialTaskRunner(
     onSequenceStop: () => void,
     onSequenceEnd: () => void, 
 ): Promise<void> {
-
-    const runner = async (
-        tasks: SequentialTaskRunnerTask[], 
-        index: number = 0
-    ): Promise<void> => {
+    const runner = async (tasks: SequentialTaskRunnerTask[], index: number = 0): Promise<void> => {
         const task = tasks[index];
 
         if (!isUndefined(task)) {
@@ -25,7 +21,7 @@ export async function sequentialTaskRunner(
 
             if (success) {
                 !!task.onSuccess && task.onSuccess();
-                runner(tasks, ++index);
+                await runner(tasks, ++index);
             }
             else {
                 !!task.onFail && task.onFail();
@@ -37,5 +33,5 @@ export async function sequentialTaskRunner(
         }
     };
 
-    runner(tasks);
+    await runner(tasks);
 }

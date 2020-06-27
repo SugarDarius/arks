@@ -52,7 +52,7 @@ export const CreatorMessage: TCreatorMessage = {
 
     executingNpmInstallCommand: `Executing npm install command...`,
     npmInstallCommandExecuted: `Npm install command executed!`,
-    npmInstallCommandError: `An error as occured while executing the npm install command, see the logs above`,
+    npmInstallCommandError: `An error as occured while executing the npm install command, see the logs above!`,
 
     sequentialCommandsTasksEnded: `Sequential commands tasks ended!`,
     sequentialCommandsTasksStopped: `Sequential commands tasks stopped!`,
