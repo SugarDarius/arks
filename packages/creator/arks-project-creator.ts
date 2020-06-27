@@ -2,7 +2,8 @@ import { ArksServerLogger } from '@arks/logger';
 import { CreatorMessage } from '@arks/common';
 import {
     findClosestBinPath,
-    runShellCommand, 
+    runShellCommand,
+    sequentialTaskRunner,
 } from '@arks/utils';
 
 import * as path from 'path';
@@ -32,14 +33,17 @@ export class ArksProjectCreator {
         });
     }
 
-    private async createProjectDirectory(): Promise<void> {
+    private async createProjectDirectory(): Promise<boolean> {
         const { name } = this.options;
         const spinner = this.createSpinner(CreatorMessage.creatingProjectDirectory);
+
+        let success = false;
 
         try {
            spinner.start();
 
            await fs.promises.mkdir(path.resolve(this._cwd, `./${name}`));
+           success = true;
 
            spinner.stop();
            ArksServerLogger.info(CreatorMessage.projectDirectoryCreated);
@@ -50,6 +54,8 @@ export class ArksProjectCreator {
             ArksServerLogger.info(CreatorMessage.projectDirectoryCreationError);
             ArksServerLogger.error(err.message || err, err.stack);
         }
+
+        return success;
     }
 
     private async createFilesWithSchematics(): Promise<boolean> {
@@ -92,6 +98,28 @@ export class ArksProjectCreator {
         return false;
     }
 
+    private async runNpmInstall(): Promise<boolean> {
+        const { name } = this.options;
+
+        const execState = await runShellCommand({
+            command: 'npm',
+            args: [
+                'install'
+            ],
+            cwd: `${this._cwd}/${name}`,
+            logger: {
+                info: (message: string) => {
+                    ArksServerLogger.info(message);
+                },
+                error: (message: string) => {
+                    ArksServerLogger.error(message);
+                }
+            }
+        });
+        
+        return execState.success;
+    }
+
     async runCreator(): Promise<void> {
         const { name } = this.options;
 
@@ -102,17 +130,36 @@ export class ArksProjectCreator {
         else {
             const startBuildTime = process.hrtime();
 
-            await this.createProjectDirectory();
-            const isFilesCreated = await this.createFilesWithSchematics();
+            sequentialTaskRunner(
+                [
+                    {
+                        action: async (): Promise<boolean> => {
+                            return this.createProjectDirectory();
+                        }
+                    },
+                    {
+                        action: async (): Promise<boolean> => {
+                            return this.createFilesWithSchematics();
+                        },
+                    }
+                ],
+                (): void => {
+                    ArksServerLogger.info(CreatorMessage.sequentialCommandsTasksStopped);
+                    ArksServerLogger.info(CreatorMessage.projectionCreationAborted);
+                },
+                (): void => {
+                    ArksServerLogger.info(CreatorMessage.sequentialCommandsTasksEnded);
 
-            const elapsedBuildTime = process.hrtime(startBuildTime);
+                    const elapsedBuildTime = process.hrtime(startBuildTime);
 
-            // Note: for precision
-            const elapsedBuildTimeNs = elapsedBuildTime[0] * 1e9 + elapsedBuildTime[1];
-            const elapsedBuildTimeMs = elapsedBuildTimeNs / 1000000;
-            const elapsedBuildTimeS = elapsedBuildTimeMs / 1000;
-            
-            ArksServerLogger.info(CreatorMessage.creationTotaltime(elapsedBuildTimeS));
+                    // Note: for precision
+                    const elapsedBuildTimeNs = elapsedBuildTime[0] * 1e9 + elapsedBuildTime[1];
+                    const elapsedBuildTimeMs = elapsedBuildTimeNs / 1000000;
+                    const elapsedBuildTimeS = elapsedBuildTimeMs / 1000;
+                    
+                    ArksServerLogger.info(CreatorMessage.creationTotaltime(elapsedBuildTimeS));
+                }
+            );
         }
     }
 }

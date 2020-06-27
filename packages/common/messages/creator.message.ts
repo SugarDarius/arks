@@ -17,6 +17,13 @@ export type TCreatorMessage = {
 
     executingSchematicsCommand: string;
     schematicsCommandExecuted: string;
+
+    executingNpmInstallCommand: string;
+    npmInstallCommandExecuted: string;
+    npmInstallCommandError: string;
+
+    sequentialCommandsTasksEnded: string;
+    sequentialCommandsTasksStopped: string;
 };
 
 export const CreatorMessage: TCreatorMessage = {
@@ -42,4 +49,11 @@ export const CreatorMessage: TCreatorMessage = {
 
     executingSchematicsCommand: `Executing schematics command...`,
     schematicsCommandExecuted: `Schematics command executed!`,
+
+    executingNpmInstallCommand: `Executing npm install command...`,
+    npmInstallCommandExecuted: `Npm install command executed!`,
+    npmInstallCommandError: `An error as occured while executing the npm install command, see the logs above`,
+
+    sequentialCommandsTasksEnded: `Sequential commands tasks ended!`,
+    sequentialCommandsTasksStopped: `Sequential commands tasks stopped!`,
 };
