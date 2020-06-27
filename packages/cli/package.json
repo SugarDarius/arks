@@ -41,6 +41,7 @@
         "typescript": "3.9.3"
     },
     "dependencies": {
+        "@angular-devkit/core": "9.1.9",
         "@arks/misc": "1.0.0",
         "@arks/server": "1.0.0",
         "@arks/builder": "1.0.0",
