@@ -89,6 +89,32 @@ packagesList.forEach((name: string): void => {
     }
 });
 
+const schematicsFilesList = [
+    { 
+        name: 'package',
+        glob: 'package.json',
+        destPath: ''
+    },
+    {
+        name: 'collection',
+        glob: 'collection.json',
+        destPath: '',
+    },
+    {
+        name: 'application:template:files',
+        glob: 'application/files/**/*',
+        destPath: '/application/files',
+        options: { dot: true },
+    },
+    {
+        name: 'application:schema',
+        glob: 'application/schema.json',
+        destPath: '/application'
+    }
+];
+
+const schematicsFiles: string[] = schematicsFilesList.map(({ name }) => name);
+
 function buildPackageAsDevelopment(name: string): any {
     const project = projects.get(name);
 
@@ -105,39 +131,27 @@ function buildPackageAsDevelopment(name: string): any {
         .pipe(dest(`${distDestPath}/${name}`));
 }
 
-// TODO: TO REFACTOR LATER
-function copyPackageJsonFileForSchematics(): any {
-    return src(`${packagesSource}/schematics/package.json`).pipe(dest(`${distDestPath}/schematics`));
-}
+function copySchematicsFilesAsDevelopment(item: any): any {
+    const { glob, destPath, options } = item;
 
-function copyCollectionJsonFileForSchematics(): any {
-    return src(`${packagesSource}/schematics/collection.json`).pipe(dest(`${distDestPath}/schematics`));
-}
-
-function copyApplicationTemplateFilesForSchematics(): any {
-    return src(`${packagesSource}/schematics/application/files/**/*`, { dot: true }).pipe(dest(`${distDestPath}/schematics/application/files`));
-}
-
-function copyApplicationSchemaJsonFileForSchematics(): any {
-    return src(`${packagesSource}/schematics/application/schema.json`).pipe(dest(`${distDestPath}/schematics/application`));
+    return src(`${packagesSource}/schematics/${glob}`, !!options ? options : { })
+        .pipe(dest(`${distDestPath}/schematics${destPath}`));
 }
 
 packages.forEach((name: string): void => {
     task(`${name}:build:dev`, (): any => buildPackageAsDevelopment(name));
 });
 
-task('schematics:copy:package:dev', (): any => copyPackageJsonFileForSchematics());
-task('schematics:copy:collection:dev', (): any => copyCollectionJsonFileForSchematics());
-task('schematics:copy:application:template:dev', (): any => copyApplicationTemplateFilesForSchematics());
-task('schematics:copy:application:schema:dev', (): any => copyApplicationSchemaJsonFileForSchematics());
+schematicsFilesList.forEach((item: any): void => {
+    task(`schematics:copy:${item.name}:dev`, (): any => copySchematicsFilesAsDevelopment(item));
+});
+
 
 task('build:dev', series([
     ...packages.map((name: string): string => {
         return `${name}:build:dev`;
     }),
-    'schematics:build:dev',
-    'schematics:copy:package:dev',
-    'schematics:copy:collection:dev',
-    'schematics:copy:application:template:dev',
-    'schematics:copy:application:schema:dev',
+    ...schematicsFiles.map((name: string): string => {
+        return `schematics:copy:${name}:dev`;
+    }),
 ]));
