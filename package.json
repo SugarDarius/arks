@@ -18,8 +18,12 @@
     },
     "keywords": [
         "React",
+        "React Router",
+        "Apollo GraphQL",
         "Isomorphic",
-        "Apollo GraphQL"
+        "Express",
+        "NodeJS",
+        "TypeScript"
     ],
     "engines": {
         "node": ">=12.16.3",
@@ -32,8 +36,7 @@
         "develop:cli": "lerna run develop:cli --stream",
         "format": "prettier \"**/*.ts\" --ignore-path ./.prettierignore --write && git status",
         "lint:packages": "eslint \"packages/**/*.ts\" --fix --ignore-pattern \"packages/**/*.spec.ts\"",
-        "reinstall": "node ./scripts/reinstall.script.js",
-        "arks": "node ./packages/cli/bin/arks.js"
+        "reinstall": "node ./scripts/reinstall.script.js"
     },
     "devDependencies": {
         "@commitlint/cli": "8.3.5",
