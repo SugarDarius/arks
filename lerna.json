@@ -6,7 +6,8 @@
     ],
     "command": {
         "version": {
-            "allowBranch": "master"
+            "allowBranch": "master",
+            "changelogPreset": "angular"
         },
         "publish": {
             "ignoreChanges": [ "*.md" ],

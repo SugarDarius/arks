@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { task } from 'gulp';
 import logger from 'fancy-log';
 import del from 'del';
