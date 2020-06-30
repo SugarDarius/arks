@@ -3,5 +3,15 @@
     "npmClient": "npm",
     "packages": [
         "packages/*"
-    ]
+    ],
+    "command": {
+        "version": {
+            "allowBranch": "master"
+        },
+        "publish": {
+            "ignoreChanges": [ "*.md" ],
+            "message": "build(@arks): publish release %s",
+            "registry": "https://registry.npmjs.org/"
+        }
+    }
 }

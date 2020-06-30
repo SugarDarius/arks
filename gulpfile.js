@@ -1,4 +1,6 @@
+const path = require('path');
+
 require('ts-node').register({
-    project: './tools/gulp/tsconfig.json'
+    project: path.resolve(__dirname, './tools/gulp/tsconfig.json'),
 });
 require('./tools/gulp/gulpfile');

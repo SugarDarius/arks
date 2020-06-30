@@ -12,6 +12,7 @@ const distDestPathAsProduction: string = packagesSource;
 
 function buildPackageAsProduction(name: string) {
     const project = projects.get(name);
+    const destPath = `${distDestPathAsProduction}/${name}${name === 'cli' ? '/bin' : ''}`;
 
     if (!project) {
         logger.error(`Project of name ${name} do not exists or is not in the set of projects as production!`);
@@ -21,7 +22,7 @@ function buildPackageAsProduction(name: string) {
     return project
         .src()
         .pipe(project())
-        .pipe(dest(`${distDestPathAsProduction}/${name}`));
+        .pipe(dest(destPath));
 }
 
 packages.forEach((name: string): void => {

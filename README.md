@@ -11,6 +11,12 @@
 </p>
 
 <p align="center">
+  <a href="https://lerna.js.org/">
+    <img alt="With Lerna" src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg">
+  </a>
+</p>
+
+<p align="center">
   <a href="https://twitter.com/azeldvin">  
     <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/azeldvin?style=social">
   </a>
