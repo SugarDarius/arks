@@ -10,7 +10,6 @@
             "changelogPreset": "angular"
         },
         "publish": {
-            "ignoreChanges": [ "*.md" ],
             "message": "chore(@arks): publish release %s",
             "registry": "https://registry.npmjs.org/"
         }
