@@ -78,7 +78,7 @@ You can use the following command:
 arks -h
 ```
 
-### Command: create
+### Command: `create`
 The **create** command is composed of sub commands which let you creating Arks project or objects such as components (incoming feature) into your project.
 
 #### Creating a project
@@ -94,7 +94,7 @@ Args:
 | ------------------------------- | ------------------- |--------------- | -------------- | -------- |
 | name                            | name of the project | string         |                | yes      |
 
-### Command: dev
+### Command: `dev`
 The **dev** command let you start an Arks project as development.<br />
 It will creates a webpack dev compiler with hot reloading for client side rendering and server side rendering, then creates and starts an Express server.
 
@@ -109,7 +109,7 @@ Options:
 | --host                          | -s              | Specific host to use     | string  | 0.0.0.0        | no       |
 | --protocol                      | -p              | Specific protocol to use | string  | http           | no       |
 
-### Command: build
+### Command: `build` 
 The **build** command will build and Arks project as production.<br />
 It will makes two builds. One for client side rendering and on for server side rendering.
 
@@ -122,7 +122,7 @@ Options:
 | ------------------------------- | --------------- | ------------------------------------------------- | ------- | -------------- | -------- |
 | --use-source-map                |                 | Use source map for debugging production build     | boolean | false          | no       |
 
-### Command: start
+### Command: `start`
 The **start** command let you start an Arks project as production.<br />
 It creates and starts an Express server, and then serves the application built for server side rendering and client side rendering.
 
