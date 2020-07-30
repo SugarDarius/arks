@@ -1,6 +1,6 @@
 {
     "name": "@arks/logger",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
     "types": "./index.d.ts",
@@ -30,8 +30,8 @@
         "typescript": "3.9.3"
     },
     "dependencies": {
-        "@arks/misc": "1.0.0",
         "@arks/common": "1.0.0",
+        "@arks/misc": "1.0.0",
         "chalk": "4.0.0",
         "moment": "2.26.0",
         "os-name": "3.1.0"
