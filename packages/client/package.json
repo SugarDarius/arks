@@ -42,6 +42,7 @@
         "apollo-client": "2.6.10",
         "apollo-env": "0.6.5",
         "apollo-link-http": "1.5.17",
+        "graphql": "15.1.0",
         "react": "16.13.1",
         "react-dom": "16.13.1",
         "react-router-dom": "5.2.0"
