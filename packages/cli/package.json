@@ -44,10 +44,10 @@
     },
     "dependencies": {
         "@angular-devkit/core": "9.1.9",
-        "@arks/builder": "1.0.0",
-        "@arks/creator": "1.0.0",
-        "@arks/misc": "1.0.0",
-        "@arks/server": "1.0.0",
+        "@arks/builder": "0.1.3",
+        "@arks/creator": "0.1.3",
+        "@arks/misc": "0.1.3",
+        "@arks/server": "0.1.3",
         "chalk": "4.0.0",
         "commander": "5.1.0"
     },

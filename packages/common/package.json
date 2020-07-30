@@ -31,7 +31,7 @@
         "typescript": "3.9.3"
     },
     "dependencies": {
-        "@arks/utils": "1.0.0"
+        "@arks/utils": "0.1.3"
     },
     "gitHead": "6c5093ce96c10f8687abe4f20e084fbb4dcde91a"
 }
