@@ -1,6 +1,6 @@
 {
     "name": "@arks/creator",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
     "types": "./index.d.ts",
