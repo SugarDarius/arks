@@ -11,6 +11,10 @@
 </p>
 
 <p align="center">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/SugarDarius/arks">
+  <a href="https://github.com/SugarDarius/arks/blob/master/LICENSE">
+    <img alt="GitHub" src="https://img.shields.io/github/license/SugarDarius/arks">
+  </a>
   <a href="https://lerna.js.org/">
     <img alt="With Lerna" src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg">
   </a>
