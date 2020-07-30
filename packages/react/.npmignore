@@ -3,6 +3,9 @@ node_modules/
 **/*.ts
 *.ts
 
+**/*.tsx
+*.tsx
+
 !**/*.d.ts
 !*.d.ts
 

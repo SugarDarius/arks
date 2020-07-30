@@ -16,8 +16,8 @@
     },
     "dependencies": {
         "@apollo/react-hooks": "3.1.5",
-        "@arks/cli": "0.1.9",
-        "@arks/client": "0.1.9",
+        "@arks/cli": "0.1.10",
+        "@arks/client": "0.1.10",
         "graphql": "15.1.0",
         "react": "16.13.1",
         "react-dom": "16.13.1",

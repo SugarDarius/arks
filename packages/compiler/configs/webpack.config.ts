@@ -160,7 +160,7 @@ export function createWebpackConfig(options: CreateWebpackConfigOptions): webpac
                         },
                     },
                     sourceMap: shouldUseSourceMap
-                })
+                }),
             ]
         },
     };
