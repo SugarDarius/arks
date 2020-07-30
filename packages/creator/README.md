@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="">Welcome to Arks (preview)</a>
+  <a href="https://github.com/SugarDarius/arks">Welcome to Arks (preview)</a>
 </h1>
 
 <p align="center">
