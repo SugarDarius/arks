@@ -12,3 +12,5 @@ node_modules/
 tsconfig.json
 !application/files/tsconfig.json
 !application/files/**/index.ts
+!application/files/**/*.tsx
+!application/files/**/*.d.ts

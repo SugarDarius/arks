@@ -3,5 +3,7 @@ node_modules/
 packages/**/*.d.ts
 packages/**/*.js
 
+!packages/schematics/application/files/**/*.d.ts
+
 .DS_Store
 npm-debug.log
