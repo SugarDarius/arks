@@ -1,5 +1,5 @@
 {
-    "name": "@arks/build",
+    "name": "@arks/builder",
     "version": "0.1.3",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
