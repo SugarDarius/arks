@@ -1,6 +1,6 @@
 {
     "name": "@arks/builder",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
     "types": "./index.d.ts",
@@ -31,11 +31,11 @@
         "typescript": "3.9.3"
     },
     "dependencies": {
-        "@arks/common": "0.1.6",
-        "@arks/compiler": "0.1.6",
-        "@arks/config": "0.1.6",
-        "@arks/logger": "0.1.6",
-        "@arks/utils": "0.1.6",
+        "@arks/common": "0.1.7",
+        "@arks/compiler": "0.1.7",
+        "@arks/config": "0.1.7",
+        "@arks/logger": "0.1.7",
+        "@arks/utils": "0.1.7",
         "ora": "4.0.4"
     },
     "gitHead": "6c5093ce96c10f8687abe4f20e084fbb4dcde91a"

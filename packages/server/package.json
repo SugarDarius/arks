@@ -1,6 +1,6 @@
 {
     "name": "@arks/server",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
     "types": "./index.d.ts",
@@ -40,13 +40,13 @@
         "typescript": "3.9.3"
     },
     "dependencies": {
-        "@arks/client": "0.1.6",
-        "@arks/common": "0.1.6",
-        "@arks/compiler": "0.1.6",
-        "@arks/config": "0.1.6",
-        "@arks/logger": "0.1.6",
-        "@arks/monitors": "0.1.6",
-        "@arks/utils": "0.1.6",
+        "@arks/client": "0.1.7",
+        "@arks/common": "0.1.7",
+        "@arks/compiler": "0.1.7",
+        "@arks/config": "0.1.7",
+        "@arks/logger": "0.1.7",
+        "@arks/monitors": "0.1.7",
+        "@arks/utils": "0.1.7",
         "body-parser": "1.19.0",
         "compression": "1.7.4",
         "cookie-parser": "1.4.5",
