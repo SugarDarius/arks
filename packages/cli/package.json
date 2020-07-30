@@ -1,6 +1,6 @@
 {
     "name": "@arks/cli",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./bin/arks.js",
     "types": "./bin/arks.d.ts",
@@ -44,10 +44,10 @@
     },
     "dependencies": {
         "@angular-devkit/core": "9.1.9",
-        "@arks/builder": "0.1.3",
-        "@arks/creator": "0.1.3",
-        "@arks/misc": "0.1.3",
-        "@arks/server": "0.1.3",
+        "@arks/builder": "0.1.4",
+        "@arks/creator": "0.1.4",
+        "@arks/misc": "0.1.4",
+        "@arks/server": "0.1.4",
         "chalk": "4.0.0",
         "commander": "5.1.0"
     },
