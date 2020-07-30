@@ -1,6 +1,6 @@
 {
     "name": "@arks/common",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
     "types": "./index.d.ts",
@@ -31,7 +31,7 @@
         "typescript": "3.9.3"
     },
     "dependencies": {
-        "@arks/utils": "0.1.9"
+        "@arks/utils": "0.1.10"
     },
     "gitHead": "6c5093ce96c10f8687abe4f20e084fbb4dcde91a"
 }
