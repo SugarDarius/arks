@@ -7,6 +7,7 @@ function copyMiscFilesAsProduction(name: string) {
     return src([
         'LICENSE',
         '.npmignore',
+        'README.md',
     ])
     .pipe(dest(`${packagesSource}/${name}`));
 }

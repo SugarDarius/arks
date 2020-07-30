@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-  <img width="400" align="center" src="https://raw.githubusercontent.com/SugarDarius/arks/master/medias/img/arks-logo.png" />
+  <img width="400" align="center" src="./medias/img/arks-logo.png" />
 </p>
 
 <p align="center">
