@@ -11,6 +11,10 @@
 </p>
 
 <p align="center">
+  <img align="center" alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/SugarDarius/arks">
+</p>
+
+<p align="center">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/SugarDarius/arks">
   <a href="https://github.com/SugarDarius/arks/blob/master/LICENSE">
     <img alt="GitHub" src="https://img.shields.io/github/license/SugarDarius/arks">

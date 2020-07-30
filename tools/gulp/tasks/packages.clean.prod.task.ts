@@ -7,7 +7,8 @@ import { packageDirectory } from '../configs/sources.config';
 function cleanPackagesAsProduction(done: (error?: any) => void) {
     const deletedPaths = del.sync([
         `${packageDirectory}/**/*.js`,
-        `${packageDirectory}/**/*.d.ts`
+        `${packageDirectory}/**/*.d.ts`,
+        `!${packageDirectory}/schematics/application/files/globals.d.ts`,
     ]);
 
     logger.info(`Cleaned files:`);
