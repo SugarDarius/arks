@@ -22,7 +22,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import limit from 'express-rate-limit';
 import * as bodyParser from 'body-parser';
-import coolieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import morgan from 'morgan';
 import ora from 'ora';
@@ -214,7 +214,7 @@ export class ArksServer {
             ArksServerLogger.info(ServerMessage.noCookieParser);
             ArksServerLogger.emptyLine();
         }, () => {
-            this.app.use(coolieParser());
+            this.app.use(cookieParser());
         });
 
         or(noCompression, () => {
