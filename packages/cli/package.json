@@ -1,6 +1,6 @@
 {
     "name": "@arks/cli",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./bin/arks.js",
     "types": "./bin/arks.d.ts",
@@ -10,6 +10,7 @@
     "bin": {
         "arks": "./bin/arks.js"
     },
+    "readme": "./README.md",
     "homepage": "https://github.com/SugarDarius/arks#readme",
     "bugs": {
         "url": "https://github.com/SugarDarius/arks/issues"
@@ -38,6 +39,7 @@
         "@types/chalk": "2.2.0",
         "@types/node": "14.0.5",
         "npm-run-all": "4.1.5",
+        "shx": "0.3.2",
         "typescript": "3.9.3"
     },
     "dependencies": {
@@ -47,7 +49,7 @@
         "@arks/misc": "1.0.0",
         "@arks/server": "1.0.0",
         "chalk": "4.0.0",
-        "commander": "5.1.0",
-        "shx": "0.3.2"
-    }
+        "commander": "5.1.0"
+    },
+    "gitHead": "6c5093ce96c10f8687abe4f20e084fbb4dcde91a"
 }

@@ -1,9 +1,13 @@
 {
     "name": "@arks/logger",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
     "types": "./index.d.ts",
+    "publishConfig": {
+        "access": "public"
+    },
+    "readme": "./README.md",
     "homepage": "https://github.com/SugarDarius/arks#readme",
     "bugs": {
         "url": "https://github.com/SugarDarius/arks/issues"
@@ -35,5 +39,6 @@
         "chalk": "4.0.0",
         "moment": "2.26.0",
         "os-name": "3.1.0"
-    }
+    },
+    "gitHead": "6c5093ce96c10f8687abe4f20e084fbb4dcde91a"
 }

@@ -1,9 +1,10 @@
 {
     "name": "@arks/client",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
     "types": "./index.d.ts",
+    "readme": "./README.md",
     "publishConfig": {
         "access": "public"
     },
@@ -44,5 +45,6 @@
         "react": "16.13.1",
         "react-dom": "16.13.1",
         "react-router-dom": "5.2.0"
-    }
+    },
+    "gitHead": "6c5093ce96c10f8687abe4f20e084fbb4dcde91a"
 }

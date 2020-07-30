@@ -1,6 +1,6 @@
 {
     "name": "@arks/schematics",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "An opiniated React framework for isomorphic apps built on top of React with React Router and Apollo GraphQL",
     "main": "./index.js",
     "types": "./index.d.ts",
@@ -8,6 +8,7 @@
         "access": "public"
     },
     "schematics": "./collection.json",
+    "readme": "./README.md",
     "homepage": "https://github.com/SugarDarius/arks#readme",
     "bugs": {
         "url": "https://github.com/SugarDarius/arks/issues"
@@ -33,5 +34,6 @@
     "dependencies": {
         "@angular-devkit/core": "9.1.9",
         "@angular-devkit/schematics": "9.1.9"
-    }
+    },
+    "gitHead": "6c5093ce96c10f8687abe4f20e084fbb4dcde91a"
 }
