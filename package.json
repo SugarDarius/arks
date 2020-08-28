@@ -40,8 +40,8 @@
         "release:prepublish:packages": "gulp packages:copy:misc:files:prod",
         "release:publish:packages": "lerna publish --force-publish --exact",
         "release:postpublish:packages": "gulp packages:clean:prod",
-        "format": "prettier \"**/*.ts\" --ignore-path ./.prettierignore --write && git status",
-        "lint:packages": "eslint \"packages/**/*.ts\" --fix --ignore-pattern \"packages/**/*.spec.ts\"",
+        "format:packages": "prettier --ignore-path ./.prettierignore --write",
+        "lint:packages": "eslint --fix --ignore-pattern \"*.spec.{ts,tsx\"",
         "reinstall": "node ./scripts/reinstall.script.js"
     },
     "devDependencies": {

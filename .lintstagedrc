@@ -1,6 +1,6 @@
 {
     "packages/**/*.{ts,tsx}": [
-        "npm run format",
+        "npm run format:packages",
         "npm run lint:packages"
     ]
 }
