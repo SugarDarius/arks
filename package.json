@@ -125,7 +125,7 @@
         "graphql": "15.1.0",
         "helmet": "3.22.1",
         "http-proxy-middleware": "1.0.4",
-        "moment": "2.26.0",
+        "moment": "2.29.2",
         "morgan": "1.10.0",
         "node-emoji": "1.10.0",
         "open": "7.0.4",

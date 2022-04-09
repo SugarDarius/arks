@@ -37,7 +37,7 @@
         "@arks/common": "0.1.11",
         "@arks/misc": "0.1.11",
         "chalk": "4.0.0",
-        "moment": "2.26.0",
+        "moment": "2.29.2",
         "os-name": "3.1.0"
     },
     "gitHead": "6c5093ce96c10f8687abe4f20e084fbb4dcde91a"
