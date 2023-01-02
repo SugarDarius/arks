@@ -111,7 +111,7 @@
         "apollo-client": "2.6.10",
         "apollo-env": "0.6.5",
         "apollo-link-http": "1.5.17",
-        "babel-loader": "8.1.0",
+        "babel-loader": "8.3.0",
         "body-parser": "1.19.0",
         "chalk": "4.0.0",
         "commander": "5.1.0",
@@ -134,11 +134,11 @@
         "prom-client": "12.0.0",
         "react": "16.13.1",
         "react-dom": "16.13.1",
-        "react-hot-loader": "4.12.21",
+        "react-hot-loader": "4.13.1",
         "react-router-dom": "5.2.0",
         "terser-webpack-plugin": "3.0.1",
         "uuid": "8.1.0",
-        "webpack": "4.43.0",
+        "webpack": "5.75.0",
         "webpack-dev-middleware": "3.7.2",
         "webpack-hot-middleware": "2.25.0"
     }
